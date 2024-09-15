@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 10, 2024 at 01:22 PM
+-- Generation Time: Sep 15, 2024 at 02:17 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -324,12 +324,12 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`user_id`, `user_name`, `full_name`, `email`, `phone`, `cnic`, `gender`, `rol_name`, `password`, `photo`, `isActive`, `registrationDate`, `delivery_status`) VALUES
 (1, 'Admin', 'Rauf Khalid', 'raufkhalis27@gmail.com', '03366645807', '1111111111111', 'Male', 'Administrator', 'scrypt:32768:8:1$r1uj7qL4KvRsXHkr$65d484f336c167e6026e2e1d51a104b356f9cfbf5bd98c73ba08d7f74cc5c38b0177a612f36b4c8859516cc662212d53ef4b05a2f76b9b372a2ffa8c50934c4b', '3998660_1.jpg', 1, '2024-02-17', NULL),
-(2, 'Photographer', 'Asad Khan', 'asadkhan@gmail.com', '03366645808', '2222222222222', 'Male', 'Artist', 'scrypt:32768:8:1$r1uj7qL4KvRsXHkr$65d484f336c167e6026e2e1d51a104b356f9cfbf5bd98c73ba08d7f74cc5c38b0177a612f36b4c8859516cc662212d53ef4b05a2f76b9b372a2ffa8c50934c4b', '4930582_2.jpg', 1, '2024-03-18', NULL),
-(3, 'Designer', 'Kaleem Khan', 'kaleem23@gmail.com', '03409836431', '3333333333333', 'Male', 'Artist', 'scrypt:32768:8:1$r1uj7qL4KvRsXHkr$65d484f336c167e6026e2e1d51a104b356f9cfbf5bd98c73ba08d7f74cc5c38b0177a612f36b4c8859516cc662212d53ef4b05a2f76b9b372a2ffa8c50934c4b', '2841069_3.jpg', 1, '2024-03-18', NULL),
+(2, 'Calligrapher', 'Asad Khan', 'asadkhan@gmail.com', '03366645808', '2222222222222', 'Male', 'Artist', 'scrypt:32768:8:1$r1uj7qL4KvRsXHkr$65d484f336c167e6026e2e1d51a104b356f9cfbf5bd98c73ba08d7f74cc5c38b0177a612f36b4c8859516cc662212d53ef4b05a2f76b9b372a2ffa8c50934c4b', '4930582_2.jpg', 1, '2024-03-18', NULL),
+(3, 'Painter', 'Kaleem Khan', 'kaleem23@gmail.com', '03409836431', '3333333333333', 'Male', 'Artist', 'scrypt:32768:8:1$r1uj7qL4KvRsXHkr$65d484f336c167e6026e2e1d51a104b356f9cfbf5bd98c73ba08d7f74cc5c38b0177a612f36b4c8859516cc662212d53ef4b05a2f76b9b372a2ffa8c50934c4b', '2841069_3.jpg', 1, '2024-03-18', NULL),
 (5, 'Photographer', 'Irsa Sadiq', 'irsasadiq20@gmail.com', '03441567345', '8230524567582', 'Female', 'Artist', 'scrypt:32768:8:1$NfEW3l5p093yEKap$78d5982432bd0387e1aa5c3282ca84378c6f540fa174cdc429b06977a898011338970a4b970a58e4ce1222d8e2ae214adeee8b0b86b39ddd55d51eb030d54cc0', '6151699_5.jpeg', 1, '2024-05-20', 'Available'),
 (6, 'Painter', 'Noor Khan', 'noorkhan00@gmail.com', '03409985774', '8230356809842', 'Female', 'Artist', 'scrypt:32768:8:1$HzQpHUbd39MMPhA8$4e39ec3d91d62e40be7cc0b27c40e2c5dba618974e2e7486ec7492e73561ba7fc4ab01744c957dec94f38358cc24698d2625acafd9bcfb5912b58b57c984fc71', '4208049_6.jpeg', 1, '2024-05-20', 'Available'),
-(7, 'Designer', 'Khan', 'asherkhan@gmail.com', '03418523549', '8230318860367', 'Male', 'Artist', 'scrypt:32768:8:1$68WEfj6Ys4HPTlm8$81ea188a19604bf695a40c2d5723b383b0adf68d29a0e1c37951e5f3ccc9d4409a15ead05e248d0bb89ba341ddcea8fcc4bd3effe62e9f7dc92712a2a3f3f7d9', '9036924_7.jpeg', 1, '2024-06-04', 'Available'),
-(8, 'Painter', 'Mudasir', 'rerr@gfcg.com', '56467547656', '9898989898989', 'Male', 'Artist', 'scrypt:32768:8:1$R6pSJzFb7mPZUevW$f07159d6c193239ad422edd348256fc945ae47307715d7dc651801b05ea2c412add34bd24407f68af2cab4baec16eaea9985e6e4942cd3cc1f1c0c1c6601c1bd', NULL, 0, '2024-06-10', 'Available');
+(7, 'Photographer', 'Khan', 'asherkhan@gmail.com', '03418523549', '8230318860367', 'Male', 'Artist', 'scrypt:32768:8:1$68WEfj6Ys4HPTlm8$81ea188a19604bf695a40c2d5723b383b0adf68d29a0e1c37951e5f3ccc9d4409a15ead05e248d0bb89ba341ddcea8fcc4bd3effe62e9f7dc92712a2a3f3f7d9', '9036924_7.jpeg', 1, '2024-06-04', 'Available'),
+(8, 'Calligrapher', 'Mudasir', 'rerr@gfcg.com', '56467547656', '9898989898989', 'Male', 'Artist', 'scrypt:32768:8:1$R6pSJzFb7mPZUevW$f07159d6c193239ad422edd348256fc945ae47307715d7dc651801b05ea2c412add34bd24407f68af2cab4baec16eaea9985e6e4942cd3cc1f1c0c1c6601c1bd', NULL, 0, '2024-06-10', 'Available');
 
 --
 -- Indexes for dumped tables
