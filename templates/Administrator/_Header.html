@@ -1,0 +1,90 @@
+<!-- BEGIN #header -->
+<div id="header" class="app-header">
+	<!-- BEGIN mobile-toggler -->
+	<div class="mobile-toggler">
+		<button type="button" class="menu-toggler" data-toggle="sidebar-mobile">
+			<span class="bar"></span>
+			<span class="bar"></span>
+		</button>
+	</div>
+	<!-- END mobile-toggler -->
+
+	<!-- BEGIN brand -->
+	<div class="brand">
+		<div class="desktop-toggler">
+			<button type="button" class="menu-toggler" data-toggle="sidebar-minify">
+				<span class="bar"></span>
+				<span class="bar"></span>
+			</button>
+		</div>
+		<h2 style="font-weight: bold;" class="brand-logo">
+		{% if session.user_name %}
+			{{ session.user_name }}
+		{% endif %}
+		</h2>
+	</div>
+	<!-- END brand -->
+
+	<!-- BEGIN menu -->
+	<div class="menu">
+		<form class="menu-search" method="POST" name="header_search_form">
+			<div class="menu-search-input">
+				<!-- <input type="text" class="form-control" placeholder="Search menu..."> -->
+			</div>
+		</form>
+		<div class="menu-item dropdown">
+			<a href="#" data-bs-toggle="dropdown" data-display="static" class="menu-link">
+				<div class="menu-icon"><i class="fa fa-bell nav-icon"></i></div>
+				<div class="menu-label">{{notifications_count}}</div>
+			</a>
+			<div class="dropdown-menu dropdown-menu-end dropdown-notification">
+				<h6 class="dropdown-header text-body-emphasis mb-1">Notifications</h6>
+				{% for notification in notifications %}
+					<a href="#" class="dropdown-notification-item">
+						<div class="dropdown-notification-icon">
+							{{loop.index}}
+						</div>
+						<div class="dropdown-notification-info">
+							<div class="title">{{ notification.notification_info }}</div>
+							<div class="time">Ended Date: {{ notification.end_date }}</div>
+						</div>
+						<div class="dropdown-notification-arrow">
+							<i class="fa fa-chevron-right"></i>
+						</div>
+					</a>
+				{% endfor %}
+				<!-- <div class="p-2 text-center mb-n1">
+					<a href="#" class="text-body-emphasis text-opacity-50 text-decoration-none">See all</a>
+				</div> -->
+			</div>
+			
+		</div>
+		
+		<div class="menu-item dropdown">
+			<a href="#" data-bs-toggle="dropdown" data-display="static" class="menu-link">
+				<div class="menu-img online">
+					{% if session.photo %}
+					<img src="{{ url_for('static', filename='uploaded_files/' + session.photo) }}" class="ms-100 mh-100 rounded-circle" alt="Profile Picture" style="width: 100%;height: 100%;">
+					{% else %}
+						<img class="img" style="width: 100%;height: 100%;" src="{{ url_for('static', filename='img/default_img.jpg') }}">
+					{% endif %}
+				</div>
+				<div class="menu-text">{{ session.full_name }}</div>
+			</a>
+			<div class="dropdown-menu dropdown-menu-end me-lg-3">
+				<a class="dropdown-item d-flex align-items-center" href="{{url_for('update_profile', UserId=session.UserId)}}">Edit Profile <i class="fa fa-user-circle fa-fw ms-auto text-body text-opacity-50"></i></a>
+				<!-- <a class="dropdown-item d-flex align-items-center" href="#">Change Password  <i class="fa fa-wrench fa-fw ms-auto text-body text-opacity-50"></i></a> -->
+				<!-- <a class="dropdown-item d-flex align-items-center" href="email_inbox.html">Inbox <i class="fa fa-envelope fa-fw ms-auto text-body text-opacity-50"></i></a> -->
+				<!-- <a class="dropdown-item d-flex align-items-center" href="calendar.html">Calendar <i class="fa fa-calendar-alt fa-fw ms-auto text-body text-opacity-50"></i></a> -->
+				<div class="dropdown-divider"></div>
+				<a class="dropdown-item d-flex align-items-center" href="/logout">Log Out <i class="fa fa-toggle-off fa-fw ms-auto text-body text-opacity-50"></i></a>
+			</div>
+		</div>
+		
+	</div>
+	<!-- END menu -->
+
+	
+
+</div>
+<!-- END #header -->

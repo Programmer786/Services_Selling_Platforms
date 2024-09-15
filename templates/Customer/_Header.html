@@ -1,0 +1,355 @@
+<!-- BEGIN #header -->
+<div id="header" class="app-header">
+	<!-- BEGIN brand -->
+	<div class="brand">
+		<h2 style="font-weight: bold;" class="brand-logo">
+		{% if session.rol_name %}
+		ServicesSellingPlatforms
+		{% else %}
+			<a href="/">ServicesSellingPlatforms</a>
+		{% endif %}
+		</h2>
+	</div>
+	<!-- END brand -->
+
+	<!-- BEGIN menu -->
+	<div class="menu">
+		<div class="menu-search">
+			<div class="menu-search-input">
+				<input type="text" class="form-control" id="searchInput" placeholder="Search menu...">
+			</div>
+		</div>
+
+		<nav class="navbar navbar-expand-lg navbar-light">
+			<div class="container-fluid">
+				<div class="collapse navbar-collapse" id="navbarNavDropdown" style="font-weight: bold;">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a class="nav-link active text-primary" aria-current="page" href="/">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/contact_us">Contact Us</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/about">About</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		
+
+		{% if session.cust_RolName %}
+		<div class="menu-item dropdown">
+			<button type="button" style="float:right;" class="btn btn-outline-danger btn-md d-block fw-500" data-bs-toggle="modal"
+        data-bs-target="#checkForReportModal"> <i class="fa fa-thumbs-down"></i> Report</button>
+		</div>
+		<div class="menu-item dropdown">
+			<button type="button" style="float:right;" class="btn btn-outline-primary btn-md d-block fw-500" data-bs-toggle="modal"
+        data-bs-target="#checkForFeedbackModal"> <i class="fa fa-question-circle"></i> Feedback</button>
+		</div>
+		<div class="menu-item dropdown">
+			<button type="button" style="float:right;" class="btn btn-outline-success btn-md d-block fw-500" data-bs-toggle="modal"
+        data-bs-target="#checkForDownloadModal"> <i class="fa fa-cart-arrow-down"></i></button>
+		</div>
+		{% endif %}
+
+		<div class="menu-item dropdown">
+			<a href="#" data-bs-toggle="dropdown" data-display="static" class="menu-link">
+				<div class="menu-img online">
+					<!-- <a class="ms-100 mh-100 rounded-circle">
+						<i class="fa fa-fw fa-angle-double-down"></i>
+					</a> -->
+					<img src="{{ url_for('static', filename='img/user/down_arrow.jpg') }}" class="ms-100 mh-100 rounded-circle" alt="Profile Picture">
+				</div>
+				<div class="menu-text">{{ session.Cust_FullName }}</div>
+			</a>
+			<div class="dropdown-menu dropdown-menu-end me-lg-3">
+				{% if session.cust_RolName %}
+				<a class="dropdown-item d-flex align-items-center" href="{{url_for('update_customer_profile', CustId=session.Cust_Id)}}">Edit Profile <i class="fa fa-user-circle fa-fw ms-auto text-body text-opacity-50"></i></a>
+				<!-- <a class="dropdown-item d-flex align-items-center" href="#">Change Password  <i class="fa fa-wrench fa-fw ms-auto text-body text-opacity-50"></i></a> -->
+				<!-- <a class="dropdown-item d-flex align-items-center" href="email_inbox.html">Inbox <i class="fa fa-envelope fa-fw ms-auto text-body text-opacity-50"></i></a> -->
+				<!-- <a class="dropdown-item d-flex align-items-center" href="calendar.html">Verification <i class="fa fa-calendar-alt fa-fw ms-auto text-body text-opacity-50"></i></a> -->
+				{% endif %}
+				<div class="dropdown-divider"></div>
+				{% if session.cust_RolName %}
+					<a class="dropdown-item d-flex align-items-center" href="/cust_logout">Log Out <i class="fa fa-sign-out-alt fa-fw ms-auto text-body text-opacity-50"></i></a>
+				{% else %}
+					<a class="dropdown-item d-flex align-items-center" href="/cust_login">Buyer Login <i class="fa fa-sign-in-alt fa-fw ms-auto text-body text-opacity-50"></i></a>
+					<a class="dropdown-item d-flex align-items-center" href="/cust_register">Become a Buyer <i class="fa fa-user-plus fa-fw ms-auto text-body text-opacity-50"></i></a>	
+					<a class="dropdown-item d-flex align-items-center" href="/admin_login">Seller Login <i class="fa fa-lock-open fa-fw ms-auto text-body text-opacity-50"></i></a>
+				{% endif %}
+				
+			</div>
+		</div>
+
+
+		<!-- Start Modal for Check For Download -->
+		<div class="modal fade" id="checkForDownloadModal" tabindex="-1" aria-labelledby="checkForDownloadModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-xl modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Payment Send To This Easypaisa Account: 0340-XXXXXXX</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+					</div>
+					<div class="modal-body">
+						<!-- BEGIN #datatable -->
+						<div id="datatable" class="mb-1" style="width: 100%;">
+							<div class="card">
+								<div class="card-body">
+									<table id="datatableCustomer" class="table text-nowrap w-100">
+										<thead>
+											<tr>
+												<th>P.Id#</th>
+												<th>Image</th>
+												<th>Description</th>
+												<th>Price</th>
+												<th>Download File</th>
+												<th>Delivery Status</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for order in all_order_for_download_data_retrieve %}
+											{% if session.Cust_Id == order.customer_id %}
+											<tr>
+												<td class="align-middle">{{loop.index}}</td>
+												<td style="text-wrap: wrap;">
+													<div class="d-flex align-items-center">
+														<div class="w-60px h-60px bg-gray-100 d-flex align-items-center justify-content-center">
+															<img class="mw-100 mh-100" src="{{ url_for('static', filename='uploaded_files/' + order.products.p_image) }}" alt="Product Picture">
+														</div>
+														<div class="ms-3">
+															<a href="#">{{order.products.p_name}}</a>
+														</div>
+													</div>
+												</td>
+												<td class="align-middle" style="text-wrap: wrap;"><div class="cart-descriptio-text">{{order.products.p_description}}</div></td>
+												<td class="align-middle" style="text-wrap: wrap;">{{order.products.p_price}}</td>
+												<td class="align-middle" style="text-wrap: wrap;">
+													{% if order.is_verified == 1 %}
+													<a class="btn btn-success btn-circle btn-sm" href="{{ url_for('download_product_image', P_Id=order.products.p_id) }}">
+														<i class="fa fa-download"></i> Download
+													</a>
+													{% elif not order.transaction_no %}
+													<form action="{{url_for('submit_transaction', OrderId=order.id)}}" method="post" enctype="multipart/form-data">
+														<div class="row">
+															<div class="col-12">
+																<select class="form-control" id="selectPayment" name="select_payment_method" required>
+																	<option value="" disabled selected>Select Method</option>
+																	<option value="EasyPaisa">EasyPaisa</option>
+																	<option value="Jazz Cash">Jazz Cash</option>
+																	<option value="Other Bank">Other Bank</option>
+																</select>
+															</div>
+															<div class="col-12 mt-2">
+																<input type="file" class="form-control" id="receiptUpload" name="receipt_file" accept="image/*" required />
+															</div>
+															<div class="col-12 mt-2">
+																<button type="submit" class="btn btn-primary btn-block">
+																	<i class="fa fa-upload"></i> Submit
+																</button>
+															</div>
+														</div>
+													</form>													
+													{% else %}
+													<a class="btn btn-warning btn-circle btn-sm" href="#">
+														<i class="fa fa-spinner"></i> Processing
+													</a>
+													{% endif %}
+												</td>
+												<td>{% if order.is_verified == 1 %}
+														{% if order.delivery_status != 'Deliver' %}
+														<a class="btn btn-warning fw-semibold" href="{{url_for('delivery_received', OrderId=order.id)}}">
+															<i class="fa fa-recycle"></i> Delivery Pending
+														</a>																										
+														{% else %}
+														<a class="btn btn-success fw-semibold" href="#">
+															<i class="fa fa-handshake"></i> Delivery Received
+														</a>
+														{% endif %}
+													{% endif %}
+												</td>
+											</tr>
+											{% endif %}
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<!-- END #datatable -->
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- End Modal for Check For Download -->
+
+
+		<!-- Start Modal for Check For Feedback -->
+		<div class="modal fade" id="checkForFeedbackModal" tabindex="-1" aria-labelledby="checkForFeedbackModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-xl modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Give Feedback About This Product</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+					</div>
+					<div class="modal-body">
+						<!-- BEGIN #datatable -->
+						<div id="datatable" class="mb-1" style="width: 100%;">
+							<div class="card">
+								<div class="card-body">
+									<table id="datatableCustomer" class="table text-nowrap w-100">
+										<thead>
+											<tr>
+												<th>P.Id#</th>
+												<th>Image</th>
+												<th>Description</th>
+												<th>Comments</th>
+												<th>Starts</th>
+												<th>Feedback</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for order in all_order_for_download_data_retrieve %}
+												{% if session.Cust_Id == order.customer_id %}
+													{% if order.is_verified == 1 %}
+													<tr>
+														<td class="align-middle">{{loop.index}}</td>
+														<td style="text-wrap: wrap;">
+															<div class="d-flex align-items-center">
+																<div class="w-60px h-60px bg-gray-100 d-flex align-items-center justify-content-center">
+																	<img class="mw-100 mh-100" src="{{ url_for('static', filename='uploaded_files/' + order.products.p_image) }}" alt="Product Picture">
+																</div>
+																<div class="ms-3">
+																	<a href="#">{{order.products.p_name}}</a>
+																</div>
+															</div>
+														</td>
+														<td class="align-middle" style="text-wrap: wrap;">{{order.products.p_description}}</td>
+														{% if order.feedback_submitted == 0 %}
+														<form class="modal-content" action="{{url_for('submit_feedback', OrderId=order.id)}}" method="post">
+															<td>
+																<textarea type="text" class="form-control" name="feedback" rows="2" placeholder="Feedback" required></textarea>
+															</td>
+															<td>
+																<select name="give_stars" class="form-control" required>
+																	<option value="1" selected>1</option>
+																	<option value="2">2</option>
+																	<option value="3">3</option>
+																	<option value="4">4</option>
+																	<option value="5">5</option>
+																</select>
+															</td>
+															<td>
+																<button type="submit" class="btn btn-primary"><i class="fa fa-star"></i>Submit Feedback</button>
+															</td>
+														</form>
+														{% else %}
+														<td class="text-success">{{ order.feedback_description }}</td>
+														<td class="text-success">{{ order.feedback_stars }}</td>
+														<td>
+															<a class="btn btn-success btn-circle btn-sm" href="#">
+																<i class="fa fa-star"></i> Feedback Submitted
+															</a>
+														</td>
+														{% endif %}
+													</tr>
+													{% endif %}
+												{% endif %}
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<!-- END #datatable -->
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- End Modal for Check For Feedback -->
+
+		<!-- Start Modal for Check For Report -->
+		<div class="modal fade" id="checkForReportModal" tabindex="-1" aria-labelledby="checkForReportModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-xl modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Give Report About The Artist</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+					</div>
+					<div class="modal-body">
+						<div id="datatable" class="mb-1" style="width: 100%;">
+							<div class="card">
+								<div class="card-body">
+									<table id="datatableCustomer" class="table text-nowrap w-100">
+										<thead>
+											<tr>
+												<th>ID</th>
+												<th>On Report</th>
+												<th>Reason</th>
+												<th>Report Message</th>
+												<th>Checked By Admin</th>
+												<th>Received Report Message</th>
+												<th>Created At</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for report in all_reports %}
+												{% if session.Cust_Id == report.customer_id %}
+												<tr>
+													<td class="align-middle" style="text-wrap: wrap;">{{ loop.index }}</td>
+													<td class="align-middle" style="text-wrap: wrap;">{{ report.users.full_name }}</td>
+													<td class="align-middle" style="text-wrap: wrap;">{{ report.select_reason }}</td>
+													<td class="align-middle" style="text-wrap: wrap;">{{ report.send_report_message }}</td>
+													<td class="align-middle" style="text-wrap: wrap;">{{ 'Seen' if report.is_check_by_admin else 'Not Seen' }}</td>
+													<td class="align-middle" style="text-wrap: wrap;">{{ report.received_report_message if report.received_report_message else 'No Reply' }}</td>
+													<td class="align-middle">{{ report.created_at }}</td>
+												</tr>
+												{% endif %}
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- End Modal for Check For Report -->
+		
+
+		
+	</div>
+	<!-- END menu -->
+
+	
+
+</div>
+<!-- END #header -->
+
+<!-- the js is for Navbar active -->
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var navLinks = document.querySelectorAll('.nav-link');
+		
+			navLinks.forEach(function(link) {
+				link.addEventListener('click', function() {
+				navLinks.forEach(function(nav) {
+					nav.classList.remove('active', 'text-primary');
+				});
+				this.classList.add('active', 'text-primary');
+				});
+			});
+		});
+	</script>

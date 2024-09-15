@@ -1,0 +1,79 @@
+{% extends "Administrator/_Layout.html" %}
+
+<!-- BEGIN #Body_of_this_page -->
+{% block body %}
+<h1 class="page-header">
+    Dashboard <small>page header description goes here...</small>
+</h1>
+<hr class="mb-4">
+
+
+<!--1 row Small boxes (Stat box) -->
+<div class="row">
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-info">
+        <div class="inner">
+          <h3>{{ all_order_for_download_data_retrieve }}</h3>
+
+          <p>Total Order</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-bag"></i>
+        </div>
+        <a href="/verify_payment" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- ./col -->
+<!--    <div class="col-lg-3 col-6">-->
+<!--      <div class="small-box bg-success">-->
+<!--        <div class="inner">-->
+<!--          <h3>{{ total_delivery_boy }}</h3>-->
+
+<!--          <p>Today Delivery Boy</p>-->
+<!--        </div>-->
+<!--        <div class="icon">-->
+<!--          <i class="ion ion-person-stalker"></i>-->
+<!--        </div>-->
+<!--        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>-->
+<!--      </div>-->
+<!--    </div>-->
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-warning">
+        <div class="inner">
+          <h3>{{ today_sale }}<sup style="font-size: 20px"> PKR</sup></h3>
+
+          <p>Today Sales</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-stats-bars"></i>
+        </div>
+        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-danger">
+        <div class="inner">
+          <h3>{{ total_sale }}<sup style="font-size: 20px"> PKR</sup></h3>
+
+          <p>Total Sales </p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-pie-graph"></i>
+        </div>
+        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+</div>
+<!-- /.1row -->
+
+
+
+
+
+{% endblock %}
+<!-- BEGIN #Body_of_this_page -->

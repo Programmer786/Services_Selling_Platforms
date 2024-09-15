@@ -1,0 +1,122 @@
+{% extends "Administrator/_Layout.html" %}
+{% block body %} 
+                  
+
+                  <h1 class="page-header">
+                     Make Notification <small>This page is exclusively used for Make new Notification & Details ...</small>
+                     {% if session.rol_name == 'Administrator' %}
+                     <a href="#" data-bs-toggle="modal" data-bs-target="#addNewNotificationModal" class="btn btn-primary btn-lg float-right">Add New Notification</a>
+                     {% endif %}
+                  </h1>
+                  <hr class="mb-4">
+
+                  <div class="modal fade" id="addNewNotificationModal">
+                     <div class="modal-dialog">
+                         <div class="modal-content">
+                             <form action="/notification" method="post" enctype="multipart/form-data">
+                                 <div class="modal-header">
+                                     <h5 class="modal-title">Add New Notification</h5>
+                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                 </div>
+                                 <div class="modal-body">
+                                    <div class="form-group mt-2">
+                                    <label for="exampleInputRD" style="color: black;"><b>Message *</b></label>
+                                    <input type="text" class="form-control" name="message" placeholder="message" required/>
+                                    </div>
+                                    <div class="form-group mt-2">
+                                       <label for="exampleInputRD" style="color: black;"><b>End Date *</b></label>
+                                       <input type="date" class="form-control" name="end_date" required/>
+                                    </div>
+                                 </div>
+                                 <div class="modal-footer">
+                                     <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                                     <button type="submit" class="btn btn-primary btn-md btn-block"><b>Add Notification</b></button>
+                                 </div>
+                             </form>
+                         </div>
+                     </div>
+                  </div>
+
+                  <!-- Add a modal for Add New Notification -->
+                  <div class="card border-theme bg-theme bg-opacity-25 mb-5">
+                     <div class="card-header border-theme bg-theme bg-opacity-25 fw-bold small text-body"><a style="font-size: 20px;">ALL
+                             PRODUCT CATEGORY RECORD</a></div>
+                     <!-- BEGIN #datatable -->
+                     <div id="datatable" class="mb-1">
+                         <div class="card">
+                             <div class="card-body">
+                                 <table id="datatableDefault" class="table text-nowrap w-100">
+                                    <thead>
+                                       <tr>
+                                          <th>Id#</th>
+                                          <th>Message</th>
+                                          <th>End Date</th>
+                                          <th>Status</th>
+                                          <th>Update</th>
+                                          <th>Delete</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for notification in notification_data_retrieve %}
+                                       <tr>
+                                          <td style="width: 2%;">{{ notification.n_id }}</td>
+                                          <td style="width: 73%;">{{ notification.notification_info }}</td>
+                                          <td style="width: 10%;">{{ notification.end_date }}</td>
+                                          <td style="width: 5%;">
+                                             {% if notification.status == 'Live' %}
+                                             <button type="button" class="btn btn-success btn-sm">{{notification.status}}</button>
+                                             {% else %}
+                                             <button type="button" class="btn btn-danger btn-sm">{{notification.status}}</button>
+                                             {% endif %}
+                                          </td>
+                                          <td style="width: 5%;">
+                                             <a href="#" data-bs-toggle="modal" data-bs-target="#updateNotificationModal{{ notification.n_id }}" class="btn btn-primary btn-circle  btn-md" href="#"><i class="fa fa-edit"></i> Update</a>
+                                          </td>
+                                          <td style="width: 5%;">
+                                             <a href="{{url_for('delete_notification', Notification_Id=notification.n_id)}}" class="btn btn-danger btn-circle btn-md">
+                                                <i class="fa fa-trash"> Delete</i>
+                                             </a>
+                                          </td>
+                                       </tr>
+                                       <!-- Add a modal for Update Notification -->
+                                       <div class="modal fade" id="updateNotificationModal{{ notification.n_id }}">
+                                          <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                   <!-- START #Form to Update Product -->
+                                                   <form action="{{url_for('update_notification', Notification_Id=notification.n_id)}}" method="post">
+                                                      <div class="modal-header">
+                                                            <h5 class="modal-title">Update Notification</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                      </div>
+                                                      <div class="modal-body">
+                                                         <div class="form-group mt-2">
+                                                         <label for="exampleInputRD" style="color: black;"><b>Message *</b></label>
+                                                         <input type="text" class="form-control" name="message" value="{{ notification.notification_info }}" placeholder="message" required/>
+                                                         </div>
+                                                         <div class="form-group mt-2">
+                                                            <label for="exampleInputRD" style="color: black;"><b>End Date *</b></label>
+                                                            <input type="date" class="form-control" name="end_date" value="{{ notification.end_date }}" required>
+                                                         </div>
+                                                      </div>
+                                                      <div class="modal-footer">
+                                                          <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                                                          <button type="submit" class="btn btn-primary btn-md btn-block"><b>Update Notification</b></button>
+                                                      </div>
+                                                   </form>
+                                                   <!--END #Form to Update Product -->
+                                                </div>
+                                          </div>
+                                       </div>
+                                       <!-- End Modal for Update Notification -->
+                                    {% endfor %}
+                                    </tbody>
+                                 </table>
+                             </div>
+                         </div>
+                     </div>
+                     <!-- END #datatable -->
+                 </div>
+                  <!-- End Add a modal for Add New Notification -->
+
+                  
+{% endblock %}                 

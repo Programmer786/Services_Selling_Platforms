@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Online CalliPaint Blend | POS - End User Order System</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	
+	<!-- ================== BEGIN core-css ================== -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/vendor.min.css') }}" type="text/css" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/app.customer.min.css') }}" type="text/css" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}" type="text/css" />
+	<!-- ================== END core-css ================== -->
+	<style>
+		.desc {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp: 2; /* Limits the text to 2 lines */
+			-webkit-box-orient: vertical;
+		}
+
+		.cart-descriptio-text{
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp: 2; /* Limits the text to 2 lines */
+			-webkit-box-orient: vertical;
+		}
+	</style>
+</head>
+<body class='pace-top'>
+	<!-- BEGIN #app -->
+	<div id="app" class="app app-content-full-height app-without-sidebar">
+		<!-- BEGIN #header -->
+		{% include "Customer/_Header.html" %}
+		<!-- END #header -->
+		<!-- BEGIN #content -->
+		<div id="content" class="app-content p-0">
+			<!-- BEGIN pos -->
+			<div class="pos pos-with-menu" id="pos">
+				<div class="pos-container">
+					<div>
+						<!-- BEGIN pos-menu-sidebar -->
+						<div class="pos-menu">
+							<!-- BEGIN logo -->
+							<div style="padding-bottom:15px;">
+								<h2>Hi</h2>								
+								<!-- <br/> -->
+							</div>
+							<!-- END logo -->
+							<!-- BEGIN nav-container -->
+							<div class="nav-container">
+								<div class="h-100" data-scrollbar="true" data-skip-mobile="true">
+									<ul class="nav nav-tabs">
+										<li class="nav-item">
+											<a class="nav-link active" href="#" data-filter="all">
+												<i class="fa fa-fw fa-paint-brush"></i> All CalliPaint
+											</a>
+										</li>
+										{% for one_p_category in all_product_category_name %}
+										<li class="nav-item">
+											<a class="nav-link" href="#" data-filter="{{ one_p_category.pc_name }}">
+												<i class="fa fa-fw fa-angle-double-down"></i> {{ one_p_category.pc_name }}
+											</a>
+										</li>
+										{% endfor %}
+									</ul>
+								</div>
+							</div>
+							<!-- END nav-container -->
+						</div>
+						<!-- END pos-menu-sidebar -->
+					
+						<!-- BEGIN pos-content -->
+						<div class="pos-content">
+							<div class="pos-content-container h-100">
+								<!-- BEGIN Message-Show -->
+								{% with messages = get_flashed_messages(with_categories=true) %}
+									{% if messages %}
+										{% for category, message in messages %}
+											<div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+												<strong>{{ category|capitalize }}!</strong> {{ message|capitalize }}.
+												<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+											</div>
+										{% endfor %}
+									{% endif %}
+								{% endwith %}
+								<!-- End Message-Show -->
+								<div class="row gx-4" id="artistContainer">
+									{% for artist in all_artist %}
+									<div class="col-md-4 col-sm-6 pb-4 artist-item" style="width: 337px;" data-name="{{ artist.full_name }}" data-phone="{{ artist.phone }}" data-gender="{{ artist.gender }}">
+										<div class="pos-product">
+											{% if artist.photo %}
+											<div class="img" style="background-image: url({{ url_for('static', filename='uploaded_files/' + artist.photo) }})"></div>
+											{% else %}
+											<img class="img" style="width: 300px;height: 200px;" src="{{ url_for('static', filename='img/default_img.jpg') }}">
+											{% endif %}
+											<div class="info">
+												<div class="title">{{ artist.full_name }}&reg;</div>
+												<div class="desc">{{ artist.phone }}</div>
+												<div class="price mb-2">{{ artist.gender }}</div>
+												<a href="/pos_customer_order/{{ artist.user_id }}" class="btn btn-theme fw-semibold d-block mb-2">View Gallery</a>
+												{% if session.cust_RolName %}
+												<a href="#" data-bs-toggle="modal" data-bs-target="#makeReportModal{{ artist.user_id }}" class="btn btn-warning fw-semibold d-block mb-2">Report</a>
+												{% endif %}
+											</div>
+										</div>
+									</div>
+
+									<!-- Add a modal for Make Report -->
+									<div class="modal fade" id="makeReportModal{{ artist.user_id }}">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<form action="{{url_for('make_report', Report_Id=artist.user_id)}}" method="post">
+													<div class="modal-header">
+														<h5 class="modal-title">Make Report</h5>
+														<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+													</div>
+													<div class="modal-body">
+														<div class="form-group mt-2">
+															<label for="selectReason" style="color: black;"><b>Select Reason *</b></label>
+															<select class="form-control" id="selectReason" name="select_reason" required>
+																<option value="" disabled selected>Select a reason</option>
+																<option value="Spam">Spam</option>
+																<option value="Inappropriate Content">Inappropriate Content</option>
+																<option value="Harassment">Harassment</option>
+																<option value="Violence">Violence</option>
+																<option value="Other">Other</option>
+															</select>
+														</div>
+														<div class="form-group mt-2">
+															<label for="reportMessage" style="color: black;"><b>Report Message *</b></label>
+															<input type="text" class="form-control" id="reportMessage" name="report_message" placeholder="Report Message" required/>
+														</div>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+														<button type="submit" class="btn btn-primary btn-md btn-block"><b>Make Report</b></button>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+									<!-- End Modal for Make Report -->
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+						<!-- END pos-content -->
+					
+						
+					</div>
+				</div>
+			</div>
+			<!-- END pos -->
+			
+			<!-- BEGIN pos-mobile-sidebar-toggler -->
+			<a class="pos-mobile-sidebar-toggler" data-toggle-class="pos-mobile-sidebar-toggled" data-toggle-target="#pos">
+				<i class="fa fa-shopping-bag"></i>
+				<span class="badge">{{ session.get('cart_items1', []) | length }}</span>
+			</a>
+			<!-- END pos-mobile-sidebar-toggler -->
+		</div>
+		<!-- END #content -->
+		
+		<!-- BEGIN btn-scroll-top -->
+		<a href="#" data-click="scroll-top" class="btn-scroll-top fade"><i class="fa fa-arrow-up"></i></a>
+		<!-- END btn-scroll-top -->
+	</div>
+	<!-- END #app -->
+
+	
+	<!-- ================== BEGIN core-js ================== -->
+	<script src="{{ url_for('static', filename='js/vendor.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/app.min.js') }}"></script>
+	<!-- ================== END core-js ================== -->
+
+	<!-- ================== BEGIN use for add to card data ================== -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- ================== END BEGIN use for add to card data ================== -->
+
+	<!-- ================== BEGIN page-js ================== -->
+	<script src="{{ url_for('static', filename='js/demo/pos-customer-order.demo.js') }}"></script>
+	<!-- ================== END page-js ================== -->
+	<!-- ================== BEGIN page-js ================== -->
+	<script src="{{ url_for('static', filename='plugins/@highlightjs/cdn-assets/highlight.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/demo/highlightjs.demo.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-buttons/js/buttons.colVis.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/bootstrap-table/dist/bootstrap-table.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/demo/table-plugins.demo.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/demo/sidebar-scrollspy.demo.js') }}"></script>
+	<!-- ================== END page-js ================== -->
+	<script>
+		$(document).ready(function() {
+			$('.add_for_download').click(function(event) {
+				event.preventDefault(); // Prevent the default behavior of the anchor tag
+
+				// Check if the user is logged in
+				if (isLoggedIn()) {
+					var productId = $(this).data('product-id');
+					$.ajax({
+						type: 'POST',
+						url: '/add_to_download_verification',
+						data: { product_id: productId },
+						success: function(response) {
+							console.log(response);
+							location.reload(); // Reload the page on success
+						},
+						error: function(xhr, status, error) {
+							console.error(xhr.responseText);
+							location.reload(); // Reload the page on error
+						}
+					});
+				} else {
+					// Redirect the user to the login page
+					window.location.href = '/cust_login'; 
+				}
+			});
+		});
+
+		// Function to check if the user is logged in
+		function isLoggedIn() {
+			// Implement your logic to check if the user is logged in here
+			// For example, you can check if the session variables are set
+			return '{{ session.Cust_Id }}' !== '' && '{{ session.Cust_Phone }}' !== '';
+		}
+	</script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const searchInput = document.getElementById('searchInput');
+			const artistItems = document.querySelectorAll('.artist-item');
+			const productItems = document.querySelectorAll('.product-item');
+
+			searchInput.addEventListener('input', function () {
+				const query = searchInput.value.toLowerCase();
+
+				// Filter artist items
+				artistItems.forEach(function (item) {
+					const name = item.getAttribute('data-name').toLowerCase();
+					const phone = item.getAttribute('data-phone').toLowerCase();
+					const gender = item.getAttribute('data-gender').toLowerCase();
+
+					if (name.includes(query) || phone.includes(query) || gender.includes(query)) {
+						item.style.display = 'block';
+					} else {
+						item.style.display = 'none';
+					}
+				});
+
+				// Filter product items
+				productItems.forEach(function (item) {
+					const name = item.getAttribute('data-name').toLowerCase();
+					const desc = item.getAttribute('data-desc').toLowerCase();
+
+					if (name.includes(query) || desc.includes(query)) {
+						item.style.display = 'block';
+					} else {
+						item.style.display = 'none';
+					}
+				});
+			});
+		});
+
+
+	</script>
+	
+</body>
+</html>

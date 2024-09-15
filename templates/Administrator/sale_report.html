@@ -1,0 +1,121 @@
+{% extends "Administrator/_Layout.html" %}
+
+<!-- BEGIN #Body_of_this_page -->
+{% block body %}
+<h1 class="page-header">
+    Sales Report <small>This page is exclusively used for sales report Details ...</small>
+</h1>
+<hr class="mb-4">
+
+<div class="card border-theme bg-theme bg-opacity-25 mb-5">
+    <div class="card-header border-theme bg-theme bg-opacity-25 fw-bold small text-body">
+        <a style="font-size: 20px;">SEARCHING OPTION FOR SALE REPORT</a>
+    </div>
+    <!-- BEGIN #datatable -->
+    <div id="datatable" class="mb-1">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mx-md-1">
+                    <form action="/sale_report" method="post">
+                        <div class="row mt-3">
+                            <div class="col-md-3 col-12">
+                                <label class="form-label"><b>From Date</b> <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" name="from_date" required tabindex="2">
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <label class="form-label"><b>To Date</b> <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" name="to_date" required tabindex="3">
+                            </div>
+                            <div class="col-md-2 col-12 mt-3">
+                                <button type="submit" class="btn btn-primary btn-lg d-block fw-500">
+                                    <i class="fa fa-search fa-fw ms-n1"></i> Search
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END #datatable -->
+</div>
+
+
+
+<div class="card border-theme bg-theme bg-opacity-25 mb-5">
+    <div class="card-header border-theme bg-theme bg-opacity-25 fw-bold small text-body"><a style="font-size: 20px;">ALL
+        Sales Report RECORD</a></div>
+    <!-- BEGIN #datatable -->
+    <div id="datatable" class="mb-1">
+        <div class="card">
+            <div class="card-body">
+                <table id="example" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>P.Id#</th>
+                            <th>Image</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                            <th>Price</th>
+                            <th>Process</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in all_order_for_download_data_retrieve %}
+                        {% if session.UserId == order.products.user_id  or session.rol_name== "Administrator"%}
+                            <tr>
+                                <td class="align-left">{{loop.index}}</td>
+                                <td style="text-wrap: wrap;">
+                                    <div class="d-flex align-items-center">
+                                        <div
+                                            class="w-60px h-60px bg-gray-100 d-flex align-items-center justify-content-center">
+                                            <img class="mw-100 mh-100"
+                                                src="{{ url_for('static', filename='uploaded_files/' + order.products.p_image) }}"
+                                                alt="Product Picture">
+                                        </div>
+                                        <div class="ms-3">
+                                            <a href="#">{{order.products.p_name}}</a>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle" style="text-wrap: wrap;">{{order.products.p_description}}</td>
+                                <td class="align-middle" style="text-wrap: wrap;">{{order.created_at}}</td>
+                                <td class="align-middle" style="text-wrap: wrap;">{{order.products.p_price}}</td>
+                                <td class="align-middle" style="text-wrap: wrap;">
+                                    {% if order.is_verified == 1  %}
+                                    <a class="btn btn-success btn-circle btn-sm" href="#">
+                                        <i class="fa fa-check-circle"></i> Ordered Successfully
+                                    </a>
+                                    {% else %}
+                                    <a class="btn btn-warning btn-circle btn-sm" href="#">
+                                        <i class="fa fa-spinner"></i> Processing
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                           <td style="border-right: 0px solid black;"></td>
+                           <td style="border-right: 0px solid black;"></td>
+                           <td style="border-right: 0px solid black;"></td>
+                           <td style="text-align: right;"><b></b></td>
+                           <td><b>Total Sale: {{total_sale}}</span></td>
+                           <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- END #datatable -->
+</div>
+
+
+
+
+
+{% endblock %}
+<!-- BEGIN #Body_of_this_page -->

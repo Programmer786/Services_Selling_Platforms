@@ -1,0 +1,215 @@
+{% extends "Administrator/_Layout.html" %}
+
+<!-- BEGIN #Body_of_this_page -->
+{% block body %}
+<h1 class="page-header">
+    UPDATE PROFILE <small>View and update your general account information and settings...</small>
+</h1>
+<hr class="mb-4">
+
+
+<div class="card border-theme bg-theme bg-opacity-25 mb-5">
+    <div class="card-header border-theme bg-theme bg-opacity-25 fw-bold small text-body"><a style="font-size: 20px;">UPDATE PROFILE</a></div>
+    <!-- BEGIN #datatable -->
+    <div id="datatable" class="mb-1">
+        <div class="card">
+            <div class="card-body">
+                <table id="datatableDefault" class="table text-nowrap w-100">
+                    <thead>
+                       <tr>
+                            <th>Image</th>
+                            <th>UserName</th>
+                            <th>Date</th>
+                            <th>Role_Description</th>
+                            <th>CNIC</th>
+                            <th>Phone</th>
+                            <th>Gender</th>
+                            <th>Edit</th>
+                            <th>Change Password</th>
+                            <th>Disable / Enable</th> 
+                       </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {% if role_with_cnic_data.photo %}
+                            <td>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateArtistImageModal{{ role_with_cnic_data.user_id }}">
+                                    <div class="d-flex align-items-center">
+                                        <div
+                                            class="w-60px h-60px bg-gray-100 d-flex align-items-center justify-content-center">
+                                            <img class="mw-100 mh-100"
+                                                src="{{ url_for('static', filename='uploaded_files/' + role_with_cnic_data.photo) }}"
+                                                alt="Product Picture">
+                                        </div>
+                                        <div class="ms-3">
+                                            <a href="#">{{role_with_cnic_data.full_name}}</a>
+                                        </div>
+                                    </div>
+                                </a>
+                            </td>
+                            {% else %}
+                            <td>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#updateArtistImageModal{{ role_with_cnic_data.user_id }}">Upload</a>
+                            </td>
+                            {% endif %}
+                            <td>{{role_with_cnic_data.user_name}}</td>
+                            <td>{{role_with_cnic_data.registrationDate}}</td>
+                            <td>{{role_with_cnic_data.rol_name}}</td>
+                            <td>{{role_with_cnic_data.cnic}}</td>
+                            <td>{{role_with_cnic_data.phone}}</td>
+                            <td>{{role_with_cnic_data.gender}}</td>
+                            <td>
+                               <a href="#" data-bs-toggle="modal" data-bs-target="#updateManagerModal{{ role_with_cnic_data.user_id }}" class="btn btn-success btn-circle btn-sm">
+                                  <i class="fa fa-edit"></i>
+                               </a>
+                            </td>
+                            <td>
+                               <a href="#" data-bs-toggle="modal" data-bs-target="#changePassManagerModal{{ role_with_cnic_data.user_id }}" class="btn btn-primary btn-circle btn-sm">
+                                  <i class="fa fa-edit"> Password</i>
+                               </a>
+                            </td>
+                            <td>
+                               {% if role_with_cnic_data.isActive == 1 %}
+                               <a href="{{url_for('disable_role_user', UserId=role_with_cnic_data.user_id)}}" class="btn btn-danger btn-circle btn-sm">
+                                  <i class="fa fa-trash"> Disable Now</i>
+                               </a>
+                               {% else %}
+                               <a href="{{url_for('enable_role_user', UserId=role_with_cnic_data.user_id)}}" class="btn btn-success btn-circle btn-sm">
+                                  <i class="fa fa-handshake"> Enable Now</i>
+                               </a>
+                               {% endif %}
+                            </td>
+                        </tr>
+                       
+                        <!-- Add a modal for Update New Manager -->
+                        <div class="modal fade" id="updateManagerModal{{ role_with_cnic_data.user_id }}">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <!-- START #Form to Add Manager -->
+                                    <form action="{{url_for('user_for_update', UserId=role_with_cnic_data.user_id)}}" method="post">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Update Manager</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row mt-3">
+                                                <div class="col-md-6">
+                                                    <label for="exampleInputRD" style="color: black;"><b>UserName *</b></label>
+                                                    <input type="text" class="form-control" name="user_name" value="{{role_with_cnic_data.user_name}}" placeholder="UserName" required/>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="exampleInputRD" style="color: black;"><b>Full Name *</b></label>
+                                                    <input type="text" class="form-control" name="full_name" value="{{role_with_cnic_data.full_name}}" placeholder="Manager Full Name" required/>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-3">
+                                                <div class="col-md-6">
+                                                    <label for="exampleInputRD" style="color: black;"><b>Email *</b></label>
+                                                    <input type="email" class="form-control" name="email" value="{{role_with_cnic_data.email}}" placeholder="forexample@gmail.com" required/>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="exampleInputRD" style="color: black;"><b>CNIC *</b></label>
+                                                    <input type="text" class="form-control" name="cnic" value="{{role_with_cnic_data.cnic}}" placeholder="11101xxxxxxx3" onkeypress="return onlyNumberKey(event)" maxlength="13" required/>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-3">
+                                                <div class="col-md-6">
+                                                    <label for="exampleInputRD" style="color: black;"><b>Phone No *</b></label>
+                                                    <input type="text" class="form-control" name="phone" value="{{role_with_cnic_data.phone}}" placeholder="03xxxxxxxxx" onkeypress="return onlyNumberKey(event)" maxlength="11" required/>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="exampleInputRD" style="color: black;"><b>Gender *</b></label>
+                                                    <select name="gender" class="form-control" required>
+                                                    <option value="{{ role_with_cnic_data.gender }}" style="background-color: rgb(0, 255, 17);" selected>{{ role_with_cnic_data.gender }}</option>
+                                                    <option value="Male" selected>Male</option>
+                                                    <option value="Female">Female</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Update Manager</button>
+                                        </div>
+                                    </form>
+                                    <!--END #Form to Add Manager -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Modal for Update New Manager -->
+
+                        <!-- Add a modal for Update Password -->
+                        <div class="modal fade" id="changePassManagerModal{{ role_with_cnic_data.user_id }}">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <!-- START #Form to Add Manager -->
+                                    <form action="{{url_for('change_password', UserId=role_with_cnic_data.user_id)}}" method="post">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Change Password</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label for="exampleInputRD" style="color: black;"><b>Password *</b></label>
+                                                    <input type="password" class="form-control" name="password" placeholder="************" required />
+                                                </div>
+                                            </div>
+                                            <div class="row mt-3">
+                                                <div class="col-md-12">
+                                                    <label for="exampleInputRD" style="color: black;"><b>Conform Password *</b></label>
+                                                    <input type="password" class="form-control" name="conform_password" placeholder="************" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Change Password</button>
+                                        </div>
+                                    </form>
+                                    <!--END #Form to Add Manager -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Modal for Update Password -->
+
+                        <!-- Add a modal for Update Artist Image -->
+                        <div class="modal fade" id="updateArtistImageModal{{ role_with_cnic_data.user_id }}">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <!-- START #Form to Update Artist -->
+                                    <form action="{{url_for('update_artist_image', UserId=role_with_cnic_data.user_id)}}" method="post" enctype="multipart/form-data">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Update Artist Image</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="Artist_original_image" style="color: black;"><b>Update Artist Image</b></label>
+                                                <input type="file" class="form-control" name="p_original_image" id="product_original_image" accept=".jpg, .jpeg" onchange="displayImg(this, $('#cimg2'))" required />
+                                            </div>
+                                            <div class="form-group mt-2 d-flex justify-content-center">
+                                                <img src="" alt="" id="cimg2" class="img-fluid img-thumbnail" width="300px" height="300px">
+                                            </div>                                            
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Update Artist Image</button>
+                                        </div>
+                                    </form>
+                                    <!--END #Form to Update Artist Image -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Modal for Update Artist -->
+                    </tbody>
+                 </table>
+            </div>
+        </div>
+    </div>
+    <!-- END #datatable -->
+</div>
+
+
+{% endblock %}
+<!-- BEGIN #Body_of_this_page -->

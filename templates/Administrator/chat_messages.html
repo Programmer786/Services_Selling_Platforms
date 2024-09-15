@@ -1,0 +1,151 @@
+{% extends "Administrator/_Layout.html" %}
+
+<!-- BEGIN #Body_of_this_page -->
+{% block body %}
+<h1 class="page-header">
+    View All Chat Messages <small>This page is exclusively used for All Chat Messages Details ...</small>
+</h1>
+<hr class="mb-4">
+
+<div class="card border-theme bg-theme bg-opacity-25 mb-5">
+    <div class="card-header border-theme bg-theme bg-opacity-25 fw-bold small text-body">
+        <a style="font-size: 20px;">All Chat Messages RECORD</a>
+    </div>
+    <!-- BEGIN #datatable -->
+    <div id="datatable" class="mb-1">
+        <div class="card">
+            <div class="card-body">
+                <table id="datatableDefault" class="table text-nowrap w-100">
+                    <thead>
+                        <tr>
+                            <th>P.Id#</th>
+                            <th>Sender Name</th>
+                            <th>Messages</th>
+                            <th>Reply</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users_who_sent_messages %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ user.cust_full_name }}</td>
+                            <td>
+                                <div class="chat-history">
+                                    {% for chat in all_chats[user.cust_id] %}
+                                        <div class="chat-message">
+                                            <strong>{{ chat.sender.cust_full_name }}:</strong> {{ chat.message }} <br>
+                                            {% if chat.reply_message %}
+                                                <strong>Reply:</strong> {{ chat.reply_message }} <br>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#contactMeModal{{user.cust_id}}">Contact Me</a>
+                            </td>
+                        </tr>
+
+                        <!-- Modal for Chat System -->
+                        <div class="modal fade" id="contactMeModal{{user.cust_id}}">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <!-- Modal Header -->
+                                    <div class="modal-header bg-primary text-white">
+                                        <h5 class="modal-title">Chat with {{ user.full_name }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+
+                                    <!-- Modal Body (Chat Box) -->
+                                    <div class="modal-body p-0">
+                                        <div class="chat-box">
+                                            <!-- Chat Messages -->
+                                            <div class="chat-messages px-4 py-3" id="chatMessages{{user.cust_id}}" style="max-height: 400px; overflow-y: auto;">
+                                                <!-- Chat messages will be appended here -->
+                                            </div>
+                                            
+                                            <!-- Chat Input -->
+                                            <div class="chat-input-container bg-light p-3 border-top">
+                                                <div class="d-flex">
+                                                    <input type="hidden" id="ReceiverID{{user.cust_id}}" value="{{session.UserId}}">
+                                                    <input type="hidden" id="SenderID{{user.cust_id}}" value="{{user.cust_id}}">
+                                                    <input type="text" id="chatInput{{user.cust_id}}" class="form-control me-2" placeholder="Type a message...">
+                                                    <button type="button" id="sendMessageButton{{user.cust_id}}" class="btn btn-primary">
+                                                        <i class="fas fa-paper-plane"></i> Send
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- END #datatable -->
+</div>
+
+<!-- This is for chat -->
+<script>
+    $(document).ready(function() {
+        // Function to load messages
+        function loadMessages(senderId, receiverId) {
+            $.get(`/get_messages/${senderId}/${receiverId}`, function(data) {
+                if (data.success) {
+                    const chatMessages = $(`#chatMessages${receiverId}`);
+                    chatMessages.empty();
+                    data.messages.forEach(msg => {
+                        // Check if the message is sent by the session user or the other user
+                        const messageClass = msg.sender_id == '{{ session.UserId }}' ? 'sent' : 'received';
+                        chatMessages.append(`
+                            <div class="${messageClass}">
+                                <p>${msg.message}</p>
+                                <small>${msg.timestamp}</small>
+                            </div>
+                        `);
+                    });
+                }
+            });
+        }
+
+        // Send message / reply
+        $('[id^=sendMessageButton]').click(function() {
+            const receiverId = $(this).attr('id').replace('sendMessageButton', '');
+            const senderId = $(`#SenderID${receiverId}`).val();
+            const message = $(`#chatInput${receiverId}`).val();
+
+            // Log values to check if they are valid
+            console.log("Sender ID:", senderId);
+            console.log("Receiver ID:", receiverId);
+            console.log("Message:", message);
+
+            if (message.trim() === "") {
+                alert("Message cannot be empty!");
+                return;
+            }
+
+            $.post('/send_message', { sender_id: senderId, receiver_id: receiverId, message: message }, function(data) {
+                if (data.success) {
+                    loadMessages(senderId, receiverId);
+                    $(`#chatInput${receiverId}`).val(''); // Clear input after sending
+                } else {
+                    console.error("Error sending message:", data.error);
+                }
+            });
+        });
+
+        // Load messages when modal is opened
+        $('[id^=contactMeModal]').on('shown.bs.modal', function() {
+            const receiverId = $(this).attr('id').replace('contactMeModal', '');
+            const senderId = $(`#SenderID${receiverId}`).val();
+            loadMessages(senderId, receiverId);
+        });
+    });
+</script>
+
+{% endblock %}
+<!-- END #Body_of_this_page -->

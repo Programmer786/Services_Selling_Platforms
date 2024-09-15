@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Services Selling Platforms</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+
+	<!-- ================== BEGIN core-css ================== -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/2.0.6/css/dataTables.dataTables.css" type="text/css" />
+	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css" type="text/css" />
+	<!-- ================== END core-css ================== -->
+
+	<!-- ================== BEGIN core-css ================== -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/vendor.min.css') }}" type="text/css" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/app.min.css') }}" type="text/css" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}" type="text/css" />
+	<!-- ================== END core-css ================== -->
+	<!-- ================== BEGIN page-css ================== -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" type="text/css" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='plugins/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}" type="text/css" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='plugins/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}" type="text/css" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap-table/dist/bootstrap-table.min.css') }}" type="text/css" />
+	<!-- Include jQuery before any other scripts that use $ -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$('.menu-item').on('click', function () {
+			console.log('Menu item clicked');
+			$('.menu-item').removeClass('active');
+			$(this).addClass('active');
+		});
+	</script>
+	<style>
+		.cart-descriptio-text{
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp: 2; /* Limits the text to 2 lines */
+			-webkit-box-orient: vertical;
+		}
+	</style>
+	<!-- ================== END page-css ================== -->
+	<style>
+		/* Start- this is for Chat design */
+	/* Modal styling */
+	.modal-header {
+		border-bottom: none;
+	}
+	
+	/* Chat Box Design */
+	.chat-box {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		height: 100%;
+		background-color: #f8f9fa;
+	}
+	
+	.chat-messages {
+		background-color: #ffffff;
+		border-radius: 10px;
+		padding: 10px;
+		max-height: 400px;
+		overflow-y: auto;
+	}
+	
+	/* Chat Message Styling */
+	.sent {
+		float: inline-end;
+		text-align: left;
+		background-color: #e7f3ff;
+		padding: 10px;
+		margin: 5px;
+		border-radius: 20px 20px 0 20px;
+		display: inline-block;
+		max-width: 80%;
+		box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
+	}
+	
+	.received {
+		float: inline-start;
+		text-align: left;
+		background-color: #f0f0f0;
+		padding: 10px;
+		margin: 5px;
+		border-radius: 20px 20px 20px 0;
+		display: inline-block;
+		max-width: 80%;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	}
+	
+	/* Scrollbar styling */
+	.chat-messages::-webkit-scrollbar {
+		width: 6px;
+	}
+	
+	.chat-messages::-webkit-scrollbar-track {
+		background: #f1f1f1;
+	}
+	
+	.chat-messages::-webkit-scrollbar-thumb {
+		background: #888;
+		border-radius: 10px;
+	}
+	
+	.chat-messages::-webkit-scrollbar-thumb:hover {
+		background: #555;
+	}
+	
+	/* Chat Input Styling */
+	.chat-input-container {
+		border-top: 1px solid #ddd;
+	}
+	
+	.chat-input {
+		flex-grow: 1;
+		padding: 10px;
+		border-radius: 20px;
+		border: 1px solid #ddd;
+		margin-right: 10px;
+	}
+	
+	.chat-input:focus {
+		outline: none;
+		box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+		border-color: #007bff;
+	}
+	
+	.btn-primary {
+		border-radius: 50px;
+		box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
+		transition: all 0.3s ease-in-out;
+	}
+	
+	.btn-primary:hover {
+		background-color: #0056b3;
+		box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+	}
+	
+	
+	/* End- this is for Chat design */
+	.sent {
+		background-color: #d1e7dd;
+		text-align: right;
+		padding: 5px;
+		border-radius: 5px;
+		margin-bottom: 10px;
+		float: right;
+		clear: both;
+	}
+
+	.received {
+		background-color: #f8d7da;
+		text-align: left;
+		padding: 5px;
+		border-radius: 5px;
+		margin-bottom: 10px;
+		float: left;
+		clear: both;
+	}
+
+	.chat-messages {
+		margin-bottom: 20px;
+		max-height: 400px;
+		overflow-y: auto;
+	}
+
+	.chat-message {
+		padding: 10px;
+		margin-bottom: 5px;
+	}
+
+	</style>
+</head>
+
+<body>
+	<!-- BEGIN #app -->
+	<div id="app" class="app">
+		<!-- BEGIN #header -->
+		{% include "Administrator/_Header.html" %}
+		<!-- END #header -->
+
+		<!-- BEGIN #sidebar -->
+		{% include "Administrator/_Sidebar.html" %}
+		<!-- END #sidebar -->
+
+		<!-- BEGIN #content -->
+		<div id="content" class="app-content">
+			<!-- BEGIN Message-Show -->
+			{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+				{% for category, message in messages %}
+					<div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+						<strong>{{ category|capitalize }}!</strong> {{ message|capitalize }}.
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				{% endfor %}
+			{% endif %}
+			{% endwith %}
+			<!-- End Message-Show -->
+			
+			{% block body %}
+			<!-- Put Work/Task Area container-fluid inner -->
+			{% endblock %}
+		</div>
+		<!-- END #content -->
+
+		<!-- BEGIN #footer -->
+		{% include "Administrator/_Footer.html" %}
+		<!-- END #footer -->
+
+		<!-- BEGIN btn-scroll-top -->
+		<a href="#" data-click="scroll-top" class="btn-scroll-top fade"><i class="fa fa-arrow-up"></i></a>
+		<!-- END btn-scroll-top -->
+
+		<!-- BEGIN theme-panel -->
+		
+		<!-- END theme-panel -->
+	</div>
+	<!-- END #app -->
+
+	<!-- ================== BEGIN core-js ================== -->
+	<script src="{{ url_for('static', filename='js/vendor.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/app.min.js') }}"></script>
+	<!-- ================== END core-js ================== -->
+	<!-- ================== BEGIN dropdown list for province, district-js ================== -->
+	<script src="{{ url_for('static', filename='js/dropdown_province.js') }}"></script>
+	<!-- ================== BEGIN dropdown list for province, district-js ================== -->
+	<!-- ================== BEGIN For Image in thumbnail image-js ================== -->
+	<script src="{{ url_for('static', filename='js/image_show.js') }}"></script>
+	<!-- ================== BEGIN Image in thumbnail image-js ================== -->
+	<!-- ================== BEGIN page-js ================== -->
+	<script src="{{ url_for('static', filename='plugins/@highlightjs/cdn-assets/highlight.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/demo/highlightjs.demo.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-buttons/js/buttons.colVis.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/bootstrap-table/dist/bootstrap-table.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/demo/table-plugins.demo.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/demo/sidebar-scrollspy.demo.js') }}"></script>
+	<!-- ================== END page-js ================== -->
+	<!-- ================== BEGIN page-js ================== -->
+	<script src="{{ url_for('static', filename='js/demo/pos-menu-stock.demo.js') }}"></script>
+	<!-- ================== END page-js ================== -->
+	<!-- ================== Start #Only ASCII character in that range allowed" ================== -->
+	<script>
+		function onlyNumberKey(evt) {
+			// Only ASCII character in that range allowed
+			var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+			if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+				return false;
+			return true;
+		}
+	</script>
+	<!-- ================== End #Only ASCII character in that range allowed" ================== -->
+
+	<script src="https://cdn.datatables.net/2.0.6/js/dataTables.js"></script>
+	<script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script>
+	<script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.dataTables.js"></script>
+	<script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
+	<script>
+		new DataTable('#example', {
+			layout: {
+				topStart: {
+					buttons: ['print']
+				}
+			}
+		});
+	</script>
+
+</body>
+
+</html>

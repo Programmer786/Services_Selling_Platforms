@@ -1,0 +1,54 @@
+{% extends "Customer/_Layout_Customer_design.html" %}
+
+<!-- BEGIN #Body_of_this_page -->
+{% block body %}
+    
+
+    <!--contact section start -->
+    <div class="contact_section layout_padding margin_top_80">
+      <!-- BEGIN Message-Show -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+              <strong>{{ category|capitalize }}!</strong> {{ message|capitalize }}.
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      <!-- End Message-Show -->
+      <div class="container">
+        <div class="image_2"><img src="{{ url_for('static', filename='picked/images/img-2.png') }}"></div>
+        <h1 class="about_taital">Contact Us</h1>
+        <div class="row">
+            <div class="col-md-6">
+              <div class="mail_sectin">
+                <form action="/contact_us" method="POST">
+                  <input type="text" class="email-bt" placeholder="Your Name" name="name" required>
+                  <input type="email" class="email-bt" placeholder="Email" name="email" required>
+                  <input type="text" class="email-bt" placeholder="Phone Number" name="phone" required>
+                  <textarea class="massage-bt" placeholder="Message" rows="5" name="message" required></textarea>
+                  <div class="send_bt">
+                      <button type="submit">Send</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="map_main">
+                <div class="map-responsive">
+                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d26505.58212529706!2d73.76814445!3d33.8587938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38e06bc2e50b3c01%3A0xccf5d9b9c5e55374!2s%E2%80%8EDepartment%20Of%20CS%20And%20IT%20University%20Of%20Poonch!5e0!3m2!1sen!2s!4v1717934413558!5m2!1sen!2s" width="600" height="450" style="border:0; width: 100%;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <!--contact section end -->
+
+    
+
+
+{% endblock %}
+<!-- BEGIN #Body_of_this_page -->

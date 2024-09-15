@@ -1,0 +1,129 @@
+{% extends "Administrator/_Layout.html" %}
+
+<!-- BEGIN #Body_of_this_page -->
+{% block body %}
+<h1 class="page-header">
+    Delivery Boy <small>This page is exclusively used for Delivery Boy Details ...</small>
+    <button type="button" style="float:right;" class="btn btn-theme btn-lg d-block fw-500" data-bs-toggle="modal" data-bs-target="#addNewDeliveryBoyModal">Add New Delivery Boy</button>
+</h1>
+<hr class="mb-4">
+
+<!-- Start Modal for Add New Delivery Boy -->
+<div class="modal fade" id="addNewDeliveryBoyModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- START #Form to Add Delivery Boy -->
+            <form action="/all_delivery_boy" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Delivery Boy</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label for="exampleInputRD" style="color: black;"><b>UserName *</b></label>
+                            <input type="text" class="form-control" name="user_name" placeholder="UserName" required/>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="exampleInputRD" style="color: black;"><b>Full Name *</b></label>
+                            <input type="text" class="form-control" name="full_name" placeholder="Delivery Boy Full Name" required/>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                         <div class="col-md-6">
+                            <label for="exampleInputRD" style="color: black;"><b>Email *</b></label>
+                            <input type="email" class="form-control" name="email" placeholder="forexample@gmail.com" required/>
+                         </div>
+                         <div class="col-md-6">
+                            <label for="exampleInputRD" style="color: black;"><b>CNIC *</b></label>
+                            <input type="text" class="form-control" name="cnic" placeholder="11101xxxxxxx3" onkeypress="return onlyNumberKey(event)" maxlength="13" required/>
+                         </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                           <label for="exampleInputRD" style="color: black;"><b>Phone No *</b></label>
+                           <input type="text" class="form-control" name="phone" placeholder="03xxxxxxxxx" onkeypress="return onlyNumberKey(event)" maxlength="11" required/>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="exampleInputRD" style="color: black;"><b>Gender *</b></label>
+                            <select name="gender" class="form-control" required>
+                               <option value="Male" selected>Male</option>
+                               <option value="Female">Female</option>
+                            </select>
+                         </div>
+                   </div>
+                   <div class="row mt-3">
+                       <div class="col-md-6">
+                           <label for="exampleInputRD" style="color: black;"><b>Password *</b></label>
+                           <input type="password" class="form-control" name="password" placeholder="************" required />
+                       </div>
+                       <div class="col-md-6">
+                           <label for="exampleInputRD" style="color: black;"><b>Conform Password *</b></label>
+                           <input type="password" class="form-control" name="conform_password" placeholder="************" required />
+                       </div>
+                   </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Delivery Boy</button>
+                </div>
+            </form>
+            <!--END #Form to Add Delivery Boy -->
+        </div>
+    </div>
+</div>
+<!-- End Modal for Add New Delivery Boy -->
+
+
+<div class="card border-theme bg-theme bg-opacity-25 mb-5">
+    <div class="card-header border-theme bg-theme bg-opacity-25 fw-bold small text-body"><a style="font-size: 20px;">ALL
+        DELIVERY BOY RECORD</a>
+    </div>
+    <!-- BEGIN #datatable -->
+    <div id="datatable" class="mb-1">
+        <div class="card">
+            <div class="card-body">
+                <table id="datatableDefault" class="table text-nowrap w-100">
+                    <thead>
+                        <tr>
+                            <th>No#</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>CNIC</th>
+                            <th>Gender</th>
+                            <th>Status</th>
+                         </tr>
+                    </thead>
+                    <tbody>
+                        {% for delivery_boy in all_delivery_boy_data_retrieve %}
+                           <tr>
+                              <td>{{loop.index}}</td>
+                              <td>{{delivery_boy.full_name}}</td>
+                              <td>{{delivery_boy.phone}}</td>
+                              <td>{{delivery_boy.cnic}}</td>
+                              <td>{{delivery_boy.gender}}</td>
+                              <td>
+                                 {% if delivery_boy.delivery_status == 'Pending' %}
+                                 <button type="button" class="btn btn-warning btn-sm">{{delivery_boy.delivery_status}}</button>
+                                 {% elif delivery_boy.delivery_status == 'OutOfDelivery' %}
+                                 <button type="button" class="btn btn-info btn-sm">{{delivery_boy.delivery_status}}</button>
+                                 {% elif delivery_boy.delivery_status == 'NotAvailable' %}
+                                 <button type="button" class="btn btn-danger btn-sm">{{delivery_boy.delivery_status}}</button>
+                                 {% else %}
+                                 <button type="button" class="btn btn-success btn-sm">{{delivery_boy.delivery_status}}</button>
+                                 {% endif %}
+                              </td>
+                           </tr>
+
+                        {% endfor %}
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- END #datatable -->
+</div>
+
+
+{% endblock %}
+<!-- BEGIN #Body_of_this_page -->

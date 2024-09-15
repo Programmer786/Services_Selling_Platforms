@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- basic -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- mobile metas -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+<!-- site metas -->
+<title>Picked Fresh</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content=""> 
+<!-- bootstrap css -->
+<link rel="stylesheet" href="{{ url_for('static', filename='picked/css/bootstrap.min.css') }}" type="text/css" />
+<!-- style css -->
+<link rel="stylesheet" href="{{ url_for('static', filename='picked/css/style.css') }}" type="text/css" />
+<!-- Responsive-->
+<link rel="stylesheet" href="{{ url_for('static', filename='picked/css/responsive.css') }}" type="text/css" />
+<!-- fevicon -->
+<link rel="icon" href="{{ url_for('static', filename='picked/images/fevicon.png') }}" type="image/gif" />
+<!-- Scrollbar Custom CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='picked/css/jquery.mCustomScrollbar.min.css') }}" type="text/css" />
+<!-- Tweaks for older IEs-->
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+<!-- owl stylesheets --> 
+<link rel="stylesheet" href="{{ url_for('static', filename='picked/css/owl.carousel.min.css') }}" type="text/css" />
+<link rel="stylesheet" href="{{ url_for('static', filename='picked/css/owl.theme.default.min.css') }}" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+
+<!-- ================== BEGIN core-css ================== -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/vendor.min.css') }}" type="text/css" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/app.customer.min.css') }}" type="text/css" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}" type="text/css" />
+<!-- ================== END core-css ================== -->
+
+<!-- ================== BEGIN core-css ================== -->
+<link rel="stylesheet" href="{{ url_for('static', filename='carousel/css/owl.carousel.min.css') }}" type="text/css" />
+<link rel="stylesheet" href="{{ url_for('static', filename='carousel/css/owl.theme.default.min.css') }}" type="text/css" />
+<link rel="stylesheet" href="{{ url_for('static', filename='carousel/css/animate.css') }}" type="text/css" />
+<link rel="stylesheet" href="{{ url_for('static', filename='carousel/css/style.css') }}" type="text/css" />
+<!-- ================== END core-css ================== -->
+<style>
+    .desc {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Limits the text to 2 lines */
+        -webkit-box-orient: vertical;
+    }
+
+    .cart-descriptio-text{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Limits the text to 2 lines */
+        -webkit-box-orient: vertical;
+    }
+</style>
+</head>
+<body>
+    <!-- BEGIN #header -->
+    {% include "Customer/_Header.html" %}
+    <!-- END #header -->
+    {% block body %}
+    <!-- Put Work/Task Area container-fluid inner -->
+    {% endblock %}
+
+    <!--footer section start -->
+    <div class="footer_section layout_padding">
+        <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+            <h1 class="address_text">Address</h1>
+            <div class="location_text"><a href="#"><img src="{{ url_for('static', filename='picked/images/map-icon.png') }}"><span class="padding_left_15">No.123 Chalingt Gates,</span></a></div>
+            <div class="location_text"><a href="#"><img src="{{ url_for('static', filename='picked/images/call-icon.png') }}"><span class="padding_left_15">( +01 9876543210 )</span></a></div>
+            <div class="location_text"><a href="#"><img src="{{ url_for('static', filename='picked/images/mail-icon.png') }}"><span class="padding_left_15">Locations</span></a></div>
+            </div>
+            <div class="col-md-4">
+            <h1 class="address_text">Social link</h1>
+            <div class="location_text"><a href="#"><img src="{{ url_for('static', filename='picked/images/fb-icon.png') }}"><span class="padding_left_15">Facebook</span></a></div>
+            <div class="location_text"><a href="#"><img src="{{ url_for('static', filename='picked/images/twitter-icon.png') }}"><span class="padding_left_15">Twitter</span></a></div>
+            <div class="location_text"><a href="#"><img src="{{ url_for('static', filename='picked/images/instagram-icon.png') }}"><span class="padding_left_15">Instagram</span></a></div>
+            <div class="location_text"><a href="#"><img src="{{ url_for('static', filename='picked/images/Linkedin-icon.png') }}"><span class="padding_left_15">Linkedin</span></a></div>
+            </div>
+            <div class="col-md-4">
+            <h1 class="address_text">Newsletter</h1>
+            <input type="text" class="enter_text" placeholder="Enter Your Email">
+            <div class="subscribe_bt"><a href="#">subscribe</a></div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!--footer section end -->
+    <!--copyright section start -->
+    <div class="copyright_section">
+        <p class="copyright_text">Copyright 2024 All Right Reserved <a href="#"></a></p>
+    </div>
+    <!--copyright section end -->
+
+    <!-- BEGIN btn-scroll-top -->
+    <a href="#" data-click="scroll-top" class="btn-scroll-top fade"><i class="fa fa-arrow-up"></i></a>
+    <!-- END btn-scroll-top -->
+
+    <!-- Javascript files-->
+    <script src="{{ url_for('static', filename='picked/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='picked/js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='picked/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- <script src="{{ url_for('static', filename='picked/js/jquery-3.0.0.min.js') }}"></script> -->
+    <script src="{{ url_for('static', filename='picked/js/plugin.js') }}"></script>
+    <!-- sidebar -->
+    <script src="{{ url_for('static', filename='picked/js/jquery.mCustomScrollbar.concat.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='picked/js/custom.js') }}"></script>
+    <!-- javascript --> 
+    <script src="{{ url_for('static', filename='picked/js/owl.carousel.js') }}"></script>
+    <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+    <!-- ================== BEGIN core-js ================== -->
+	<script src="{{ url_for('static', filename='js/vendor.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/app.min.js') }}"></script>
+	<!-- ================== END core-js ================== -->
+
+	<!-- ================== BEGIN use for add to card data ================== -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- ================== END BEGIN use for add to card data ================== -->
+
+	<!-- ================== BEGIN page-js ================== -->
+	<script src="{{ url_for('static', filename='js/demo/pos-customer-order.demo.js') }}"></script>
+	<!-- ================== END page-js ================== -->
+	<!-- ================== BEGIN page-js ================== -->
+	<script src="{{ url_for('static', filename='plugins/@highlightjs/cdn-assets/highlight.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/demo/highlightjs.demo.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-buttons/js/buttons.colVis.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='plugins/bootstrap-table/dist/bootstrap-table.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/demo/table-plugins.demo.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/demo/sidebar-scrollspy.demo.js') }}"></script>
+	<!-- ================== END page-js ================== -->
+
+	<script src="{{ url_for('static', filename='carousel/js/popper.js') }}"></script>
+	<script src="{{ url_for('static', filename='carousel/js/owl.carousel.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='carousel/js/main.js') }}"></script>
+
+	<script>
+		$(document).ready(function() {
+			$('.add_for_download').click(function(event) {
+				event.preventDefault(); // Prevent the default behavior of the anchor tag
+
+				// Check if the user is logged in
+				if (isLoggedIn()) {
+					var productId = $(this).data('product-id');
+					$.ajax({
+						type: 'POST',
+						url: '/add_to_download_verification',
+						data: { product_id: productId },
+						success: function(response) {
+							console.log(response);
+							location.reload(); // Reload the page on success
+						},
+						error: function(xhr, status, error) {
+							console.error(xhr.responseText);
+							location.reload(); // Reload the page on error
+						}
+					});
+				} else {
+					// Redirect the user to the login page
+					window.location.href = '/cust_login'; 
+				}
+			});
+		});
+
+		// Function to check if the user is logged in
+		function isLoggedIn() {
+			// Implement your logic to check if the user is logged in here
+			// For example, you can check if the session variables are set
+			return '{{ session.Cust_Id }}' !== '' && '{{ session.Cust_Phone }}' !== '';
+		}
+	</script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const searchInput = document.getElementById('searchInput');
+			const artistItems = document.querySelectorAll('.artist-item');
+			const productItems = document.querySelectorAll('.product-item');
+
+			searchInput.addEventListener('input', function () {
+				const query = searchInput.value.toLowerCase();
+
+				// Filter artist items
+				artistItems.forEach(function (item) {
+					const name = item.getAttribute('data-name').toLowerCase();
+					const phone = item.getAttribute('data-phone').toLowerCase();
+					const gender = item.getAttribute('data-gender').toLowerCase();
+
+					if (name.includes(query) || phone.includes(query) || gender.includes(query)) {
+						item.style.display = 'block';
+					} else {
+						item.style.display = 'none';
+					}
+				});
+
+				// Filter product items
+				productItems.forEach(function (item) {
+					const name = item.getAttribute('data-name').toLowerCase();
+					const desc = item.getAttribute('data-desc').toLowerCase();
+
+					if (name.includes(query) || desc.includes(query)) {
+						item.style.display = 'block';
+					} else {
+						item.style.display = 'none';
+					}
+				});
+			});
+		});
+
+
+	</script>
+</body>
+</html>
