@@ -9,51 +9,198 @@ from werkzeug.utils import secure_filename
 
 @app.route("/")
 def customer_dashboard():
-    # try:
-    # Get all necessary data from the database
-    all_product_category_name = ProductCategory.query.all()
-    all_products_data_retrieve = (
-        Products.query
-        .join(ProductCategory)
-        .options(joinedload(Products.product_category))
-        .all()
-    )
-    all_order_for_download_data_retrieve = (
-        ProductDownloadVerification.query
-        .join(Products)
-        .options(joinedload(ProductDownloadVerification.products))
-        .all()
-    )
+    try:
+        # Get all necessary data from the database
+        all_product_category_name = ProductCategory.query.all()
+        all_products_data_retrieve = (
+            Products.query
+            .join(ProductCategory)
+            .options(joinedload(Products.product_category))
+            .all()
+        )
+        all_order_for_download_data_retrieve = (
+            ProductDownloadVerification.query
+            .join(Products)
+            .options(joinedload(ProductDownloadVerification.products))
+            .all()
+        )
 
-    all_artist = Users.query.filter_by(rol_name='Artist').all()
+        all_artist = Users.query.filter_by(rol_name='Artist').all()
 
-    all_reports = MakeReport.query.all()  # Retrieve all report data
+        all_reports = MakeReport.query.all()  # Retrieve all report data
 
-    base_static_url = url_for('static', filename='')
+        base_static_url = url_for('static', filename='')
 
-    # Calculate the average rating for each artist
-    artist_ratings = {}
-    for artist in all_artist:
-        feedbacks = ProductDownloadVerification.query.join(Products).filter(Products.user_id == artist.user_id).all()
-        total_stars = sum(feedback.feedback_stars for feedback in feedbacks if feedback.feedback_stars is not None)
-        count_stars = sum(1 for feedback in feedbacks if feedback.feedback_stars is not None)
-        average_rating = total_stars / count_stars if count_stars > 0 else 0
-        artist_ratings[artist.user_id] = average_rating
+        # Calculate the average rating for each artist
+        artist_ratings = {}
+        for artist in all_artist:
+            feedbacks = ProductDownloadVerification.query.join(Products).filter(Products.user_id == artist.user_id).all()
+            total_stars = sum(feedback.feedback_stars for feedback in feedbacks if feedback.feedback_stars is not None)
+            count_stars = sum(1 for feedback in feedbacks if feedback.feedback_stars is not None)
+            average_rating = total_stars / count_stars if count_stars > 0 else 0
+            artist_ratings[artist.user_id] = average_rating
 
-    # Pass the function to the template context
-    return render_template('Customer/index.html',
-                           all_product_category_name=all_product_category_name,
-                           all_products_data_retrieve=all_products_data_retrieve,
-                           base_static_url=base_static_url,
-                           all_order_for_download_data_retrieve=all_order_for_download_data_retrieve,
-                           product_already_added=product_already_added,
-                           all_artist=all_artist,
-                           all_reports=all_reports,
-                           artist_ratings=artist_ratings)
-    # except Exception as e:
-    #     db.session.rollback()
-    #     flash(f"Error: {str(e)}", "danger")
-    #     return redirect('/')
+        # Pass the function to the template context
+        return render_template('Customer/index.html',
+                               all_product_category_name=all_product_category_name,
+                               all_products_data_retrieve=all_products_data_retrieve,
+                               base_static_url=base_static_url,
+                               all_order_for_download_data_retrieve=all_order_for_download_data_retrieve,
+                               product_already_added=product_already_added,
+                               all_artist=all_artist,
+                               all_reports=all_reports,
+                               artist_ratings=artist_ratings)
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error: {str(e)}", "danger")
+        return redirect('/')
+
+
+@app.route("/Calligrapher")
+def Calligrapher():
+    try:
+        # Get all necessary data from the database
+        all_product_category_name = ProductCategory.query.all()
+        all_products_data_retrieve = (
+            Products.query
+            .join(ProductCategory)
+            .options(joinedload(Products.product_category))
+            .all()
+        )
+        all_order_for_download_data_retrieve = (
+            ProductDownloadVerification.query
+            .join(Products)
+            .options(joinedload(ProductDownloadVerification.products))
+            .all()
+        )
+
+        all_artist = Users.query.filter_by(rol_name='Artist',user_name='Calligrapher').all()
+
+        all_reports = MakeReport.query.all()  # Retrieve all report data
+
+        base_static_url = url_for('static', filename='')
+
+        # Calculate the average rating for each artist
+        artist_ratings = {}
+        for artist in all_artist:
+            feedbacks = ProductDownloadVerification.query.join(Products).filter(Products.user_id == artist.user_id).all()
+            total_stars = sum(feedback.feedback_stars for feedback in feedbacks if feedback.feedback_stars is not None)
+            count_stars = sum(1 for feedback in feedbacks if feedback.feedback_stars is not None)
+            average_rating = total_stars / count_stars if count_stars > 0 else 0
+            artist_ratings[artist.user_id] = average_rating
+
+        # Pass the function to the template context
+        return render_template('Customer/Calligrapher.html',
+                               all_product_category_name=all_product_category_name,
+                               all_products_data_retrieve=all_products_data_retrieve,
+                               base_static_url=base_static_url,
+                               all_order_for_download_data_retrieve=all_order_for_download_data_retrieve,
+                               product_already_added=product_already_added,
+                               all_artist=all_artist,
+                               all_reports=all_reports,
+                               artist_ratings=artist_ratings)
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error: {str(e)}", "danger")
+        return redirect('/')
+
+
+@app.route("/Painter")
+def Painter():
+    try:
+        # Get all necessary data from the database
+        all_product_category_name = ProductCategory.query.all()
+        all_products_data_retrieve = (
+            Products.query
+            .join(ProductCategory)
+            .options(joinedload(Products.product_category))
+            .all()
+        )
+        all_order_for_download_data_retrieve = (
+            ProductDownloadVerification.query
+            .join(Products)
+            .options(joinedload(ProductDownloadVerification.products))
+            .all()
+        )
+
+        all_artist = Users.query.filter_by(rol_name='Artist',user_name='Painter').all()
+
+        all_reports = MakeReport.query.all()  # Retrieve all report data
+
+        base_static_url = url_for('static', filename='')
+
+        # Calculate the average rating for each artist
+        artist_ratings = {}
+        for artist in all_artist:
+            feedbacks = ProductDownloadVerification.query.join(Products).filter(Products.user_id == artist.user_id).all()
+            total_stars = sum(feedback.feedback_stars for feedback in feedbacks if feedback.feedback_stars is not None)
+            count_stars = sum(1 for feedback in feedbacks if feedback.feedback_stars is not None)
+            average_rating = total_stars / count_stars if count_stars > 0 else 0
+            artist_ratings[artist.user_id] = average_rating
+
+        # Pass the function to the template context
+        return render_template('Customer/Painter.html',
+                               all_product_category_name=all_product_category_name,
+                               all_products_data_retrieve=all_products_data_retrieve,
+                               base_static_url=base_static_url,
+                               all_order_for_download_data_retrieve=all_order_for_download_data_retrieve,
+                               product_already_added=product_already_added,
+                               all_artist=all_artist,
+                               all_reports=all_reports,
+                               artist_ratings=artist_ratings)
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error: {str(e)}", "danger")
+        return redirect('/')
+
+
+@app.route("/Photographer")
+def Photographer():
+    try:
+        # Get all necessary data from the database
+        all_product_category_name = ProductCategory.query.all()
+        all_products_data_retrieve = (
+            Products.query
+            .join(ProductCategory)
+            .options(joinedload(Products.product_category))
+            .all()
+        )
+        all_order_for_download_data_retrieve = (
+            ProductDownloadVerification.query
+            .join(Products)
+            .options(joinedload(ProductDownloadVerification.products))
+            .all()
+        )
+
+        all_artist = Users.query.filter_by(rol_name='Artist',user_name='Photographer').all()
+
+        all_reports = MakeReport.query.all()  # Retrieve all report data
+
+        base_static_url = url_for('static', filename='')
+
+        # Calculate the average rating for each artist
+        artist_ratings = {}
+        for artist in all_artist:
+            feedbacks = ProductDownloadVerification.query.join(Products).filter(Products.user_id == artist.user_id).all()
+            total_stars = sum(feedback.feedback_stars for feedback in feedbacks if feedback.feedback_stars is not None)
+            count_stars = sum(1 for feedback in feedbacks if feedback.feedback_stars is not None)
+            average_rating = total_stars / count_stars if count_stars > 0 else 0
+            artist_ratings[artist.user_id] = average_rating
+
+        # Pass the function to the template context
+        return render_template('Customer/Photographer.html',
+                               all_product_category_name=all_product_category_name,
+                               all_products_data_retrieve=all_products_data_retrieve,
+                               base_static_url=base_static_url,
+                               all_order_for_download_data_retrieve=all_order_for_download_data_retrieve,
+                               product_already_added=product_already_added,
+                               all_artist=all_artist,
+                               all_reports=all_reports,
+                               artist_ratings=artist_ratings)
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error: {str(e)}", "danger")
+        return redirect('/')
 
 
 
