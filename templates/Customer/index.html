@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Services Selling Platforms</title>
+	<title></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="">
 	<meta name="author" content="">
@@ -185,7 +185,7 @@
                 <!-- Hero Section -->
                 <header class="hero-section text-center text-white">
                   <div class="container">
-                      <h1>Find the right <em>freelance</em> service, right away</h1>
+                      <h1>Find the best <em>Photographer</em> Calligrapher and Painter</h1>
                       <div class="search-bar-package">
                           <form class="search-form button-inside">
                               <input type="search" id="searchInput" class="long-placeholder" autocomplete="off" placeholder="Search for any service..." value="">
@@ -209,7 +209,7 @@
                           <div class="col-md-3">
                               <a href="/Calligrapher" class="card-link">
                                   <div class="card">
-                                      <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fGNhbGxpZ3JhcGh5fGVufDB8fHx8MTYzNjc5NjEyMA&ixlib=rb-1.2.1&q=80&w=1080" class="card-img-top" alt="Calligrapher">
+                                      <img src="{{ url_for('static', filename='img/calli3.jpg') }}" class="card-img-top" alt="Calligrapher">
                                       <div class="card-body">
                                           <h5 class="card-title">Calligrapher</h5>
                                       </div>
@@ -219,7 +219,7 @@
                           <div class="col-md-3">
                               <a href="/Painter" class="card-link">
                                   <div class="card">
-                                      <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fGRpZ2l0YWwlMjBtYXJrZXRpbmd8ZW58MHx8fHwxNjM2Nzk2MTIw&ixlib=rb-1.2.1&q=80&w=1080" class="card-img-top" alt="Painter">
+                                      <img src="{{ url_for('static', filename='img/paintt5.jpg') }}" class="card-img-top" alt="Painter">
                                       <div class="card-body">
                                           <h5 class="card-title">Painter</h5>
                                       </div>
@@ -229,7 +229,7 @@
                           <div class="col-md-3">
                               <a href="/Photographer" class="card-link">
                                   <div class="card">
-                                      <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fHBob3RvZ3JhcGh5fGVufDB8fHx8MTYzNjc5NjEyMA&ixlib=rb-1.2.1&q=80&w=1080" class="card-img-top" alt="Photographer">
+                                      <img src="{{ url_for('static', filename='img/photo2.jpg') }}" class="card-img-top" alt="Photographer">
                                       <div class="card-body">
                                           <h5 class="card-title">Photographer</h5>
                                       </div>
@@ -436,8 +436,7 @@
       thumbnail.addEventListener('click', function(event) {
         event.preventDefault();
 
-        // Remove active class from all thumbnails
-        thumbnails.forEach(thumb => thumb.parentElement.classList.remove('active'));
+        // Remove active class from all thumbnails        .forEach(thumb => thumb.parentElement.classList.remove('active'));
 
         // Add active class to the clicked thumbnail
         this.parentElement.classList.add('active');

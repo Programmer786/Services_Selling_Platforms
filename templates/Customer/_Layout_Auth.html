@@ -11,7 +11,41 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/vendor.min.css') }}" type="text/css" />
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/app.min.css') }}" type="text/css" />
 	<!-- ================== END core-css ================== -->
-	
+
+	<!-- Inline Styles for Background -->
+	<style>
+		body {
+			background: url('{{ url_for('static', filename='img/services.jpg') }}') no-repeat center center fixed;
+			background-size: cover;
+			font-family: Arial, sans-serif;
+		}
+
+		#app {
+			backdrop-filter: blur(8px);
+			background-color: rgba(255, 255, 255, 0.1);
+			padding: 20px;
+			border-radius: 10px;
+		}
+
+		.btn-scroll-top {
+			position: fixed;
+			bottom: 20px;
+			right: 20px;
+			background: #007bff;
+			color: #fff;
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+
+		.btn-scroll-top:hover {
+			background: #0056b3;
+		}
+	</style>
 </head>
 <body>
 	<!-- BEGIN #app -->
@@ -34,11 +68,11 @@
 	<!--  Only ASCII character in that range allowed -->
 	<script>
 		function onlyNumberKey(evt) {
-			
 			// Only ASCII character in that range allowed
-			var ASCIICode = (evt.which) ? evt.which : evt.keyCode
-			if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+			var ASCIICode = (evt.which) ? evt.which : evt.keyCode;
+			if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57)) {
 				return false;
+			}
 			return true;
 		}
 	</script>
@@ -49,7 +83,7 @@
 		document.addEventListener("DOMContentLoaded", function() {
 			// Get the input field for the username
 			var usernameInput = document.querySelector('input[name="user_name"]');
-	
+
 			// Add an event listener to the input field to check for spaces
 			usernameInput.addEventListener('input', function() {
 				var username = this.value;
@@ -64,8 +98,6 @@
 		});
 	</script>
 	<!-- ================== End #username cannot allowed space" ================== -->
-	
 
 </body>
-
 </html>

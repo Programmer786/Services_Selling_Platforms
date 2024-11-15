@@ -25968,7 +25968,7 @@ fieldset:disabled .btn {
     --bs-app-header-box-shadow: 0 6px 6px rgba(var(--bs-theme-rgb), 0.1);
     --bs-app-header-zindex: 1030;
     --bs-app-header-height: 3.75rem;
-    --bs-app-header-brand-width: 15rem;
+    --bs-app-header-brand-width: 30rem;
     --bs-app-header-brand-height: 3.75rem;
     --bs-app-header-brand-font-weight: 600;
     --bs-app-header-brand-color: #212837;

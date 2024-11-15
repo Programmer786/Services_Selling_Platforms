@@ -98,6 +98,7 @@
 												<div class="title">{{ product.p_name }}&reg;</div>
 												<div class="desc">{{ product.p_description }}</div>
 												<div class="price mb-2">${{ product.p_price }}</div>
+												<div class="stock mb-2">Available Stock: {{ product.p_stock }}</div>
 												{% if product_already_added(product.p_id) %}
 												<a href="#" class="btn btn-success fw-semibold d-block mb-2">Already Added</a>
 												{% else %}
@@ -110,7 +111,9 @@
 								</div>
 							</div>
 						</div>
+						
 						<!-- END pos-content -->
+
 					
 						
 					</div>

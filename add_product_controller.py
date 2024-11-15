@@ -9,137 +9,138 @@ import os
 import random
 
 
+
 @app.route('/add_product', methods=['POST', 'GET'])
 def add_product():
     if 'cnic' and 'user_name' and 'rol_name' in session:
-        try:
-            # Fetch notification data from the database
-            notifications = MakeNotification.query.filter_by(status='Live').all()
-            notifications_count = MakeNotification.query.filter_by(status='Live').count()
-            # this is for get a province
-            all_product_category_name = ProductCategory.query.all()
+        # try:
+        # Fetch notification data from the database
+        notifications = MakeNotification.query.filter_by(status='Live').all()
+        notifications_count = MakeNotification.query.filter_by(status='Live').count()
+        # this is for get a province
+        all_product_category_name = ProductCategory.query.all()
 
-            all_products_data_retrieve = (
-                Products.query
-                .join(ProductCategory)
-                .options(joinedload(Products.product_category))  # Eager load the associated project
-                .join(Users)
-                .options(joinedload(Products.users))  # Eager load the associated project
-                .all()
+        all_products_data_retrieve = (
+            Products.query
+            .join(ProductCategory)
+            .options(joinedload(Products.product_category))  # Eager load the associated project
+            .join(Users)
+            .options(joinedload(Products.users))  # Eager load the associated project
+            .all()
+        )
+
+        if request.method == 'POST':
+            get_p_name = request.form['p_name']
+            get_p_description = request.form['p_description']
+            get_p_price = request.form['p_price']
+            get_category_id = request.form['get_category_id']
+            # get_uploaded_p_image = request.files['p_image']  # Assuming the image is a file upload, handle it accordingly
+            get_uploaded_p_original_image = request.files['p_original_image']
+
+            session_UserId = session['UserId']
+            # Check if required fields are not empty
+            if not (get_p_name and get_p_price and get_category_id):
+                flash("Error. Please fill all the required fields", "danger")
+                return redirect('/add_product')
+
+            # try:
+            new_entry_save_by_products = Products(
+                p_name=get_p_name,
+                p_description=get_p_description,
+                p_price=get_p_price,
+                pc_id=get_category_id,
+                user_id=session_UserId
             )
 
-            if request.method == 'POST':
-                get_p_name = request.form['p_name']
-                get_p_description = request.form['p_description']
-                get_p_price = request.form['p_price']
-                get_category_id = request.form['get_category_id']
-                # get_uploaded_p_image = request.files['p_image']  # Assuming the image is a file upload, handle it accordingly
-                get_uploaded_p_original_image = request.files['p_original_image']
+            if get_uploaded_p_original_image:
+                # Get the original file extension
+                _, file_extension = os.path.splitext(get_uploaded_p_original_image.filename)
+                # Generate a random 4-digit number
+                random_number = random.randint(1000000, 9999999)
+                # UserId Get from Session
+                get_user_id = session['UserId']
+                # Combine random_number, employee ID, and file extension to create a custom filename
+                custom_filename = f"{random_number}_{get_user_id}{file_extension}"
+                # Save the file and update the database record with the file path
+                file_path_system = os.path.join(app.config['ORIGINAL_UPLOAD_FOLDER'], custom_filename)  # Set your upload folder path
+                file_full_name = os.path.join("", custom_filename)  # Set your No path for database column
+                get_uploaded_p_original_image.save(file_path_system)
+                new_entry_save_by_products.p_original_image = file_full_name
 
-                session_UserId = session['UserId']
-                # Check if required fields are not empty
-                if not (get_p_name and get_p_price and get_category_id):
-                    flash("Error. Please fill all the required fields", "danger")
-                    return redirect('/add_product')
+            db.session.add(new_entry_save_by_products)
+            db.session.commit()
 
-                try:
-                    new_entry_save_by_products = Products(
-                        p_name=get_p_name,
-                        p_description=get_p_description,
-                        p_price=get_p_price,
-                        pc_id=get_category_id,
-                        user_id=session_UserId
-                    )
+            if get_uploaded_p_original_image:
+                # try:
+                # Retrieve the latest product data
+                one_products_data_retrieve = (
+                    Products.query
+                    .join(ProductCategory)
+                    .options(joinedload(Products.product_category))  # Eager load the associated project
+                    .join(Users)
+                    .options(joinedload(Products.users))  # Eager load the associated project
+                    .order_by(Products.p_id.desc())  # Assuming 'p_id' is a unique identifier column, change it accordingly
+                    .first()
+                )
 
-                    if get_uploaded_p_original_image:
-                        # Get the original file extension
-                        _, file_extension = os.path.splitext(get_uploaded_p_original_image.filename)
-                        # Generate a random 4-digit number
-                        random_number = random.randint(1000000, 9999999)
-                        # UserId Get from Session
-                        get_user_id = session['UserId']
-                        # Combine random_number, employee ID, and file extension to create a custom filename
-                        custom_filename = f"{random_number}_{get_user_id}{file_extension}"
-                        # Save the file and update the database record with the file path
-                        file_path_system = os.path.join(app.config['ORIGINAL_UPLOAD_FOLDER'], custom_filename)  # Set your upload folder path
-                        file_full_name = os.path.join("", custom_filename)  # Set your No path for database column
-                        get_uploaded_p_original_image.save(file_path_system)
-                        new_entry_save_by_products.p_original_image = file_full_name
+                # Construct the file path of the original image
+                file_path_system = os.path.join(app.config['ORIGINAL_UPLOAD_FOLDER'], one_products_data_retrieve.p_original_image)
 
-                    db.session.add(new_entry_save_by_products)
-                    db.session.commit()
+                # Open the uploaded image using Pillow
+                image = Image.open(file_path_system)
 
-                    if get_uploaded_p_original_image:
-                        try:
-                            # Retrieve the latest product data
-                            one_products_data_retrieve = (
-                                Products.query
-                                .join(ProductCategory)
-                                .options(joinedload(Products.product_category))  # Eager load the associated project
-                                .join(Users)
-                                .options(joinedload(Products.users))  # Eager load the associated project
-                                .order_by(Products.p_id.desc())  # Assuming 'p_id' is a unique identifier column, change it accordingly
-                                .first()
-                            )
+                # Load the watermark image
+                watermark_path = 'static/img/WATERMARK.png'  # Replace 'path/to/watermark.png' with the actual path to your watermark image
+                watermark = Image.open(watermark_path)
 
-                            # Construct the file path of the original image
-                            file_path_system = os.path.join(app.config['ORIGINAL_UPLOAD_FOLDER'], one_products_data_retrieve.p_original_image)
+                # Resize the watermark image
+                watermark_width, watermark_height = watermark.size
+                image_width, image_height = image.size
+                # Adjust the scale of the watermark according to the size of the uploaded image
+                scale = min(image_width, image_height) / max(watermark_width, watermark_height)
+                new_width = int(watermark_width * scale)
+                new_height = int(watermark_height * scale)
+                watermark = watermark.resize((new_width, new_height))
 
-                            # Open the uploaded image using Pillow
-                            image = Image.open(file_path_system)
+                # Calculate the position to place the watermark (e.g., bottom right corner)
+                position = (image_width - new_width, image_height - new_height)
 
-                            # Load the watermark image
-                            watermark_path = 'static/img/WATERMARK.png'  # Replace 'path/to/watermark.png' with the actual path to your watermark image
-                            watermark = Image.open(watermark_path)
+                # Paste the watermark onto the image
+                image.paste(watermark, position, watermark)
 
-                            # Resize the watermark image
-                            watermark_width, watermark_height = watermark.size
-                            image_width, image_height = image.size
-                            # Adjust the scale of the watermark according to the size of the uploaded image
-                            scale = min(image_width, image_height) / max(watermark_width, watermark_height)
-                            new_width = int(watermark_width * scale)
-                            new_height = int(watermark_height * scale)
-                            watermark = watermark.resize((new_width, new_height))
+                # Save the modified image
+                modified_image_path = os.path.join(app.config['UPLOAD_FOLDER'], f"modified_{one_products_data_retrieve.p_original_image}")
+                image.save(modified_image_path)
 
-                            # Calculate the position to place the watermark (e.g., bottom right corner)
-                            position = (image_width - new_width, image_height - new_height)
+                # Update the database record with the modified image path
+                one_products_data_retrieve.p_image = f"modified_{one_products_data_retrieve.p_original_image}"
+                db.session.commit()
 
-                            # Paste the watermark onto the image
-                            image.paste(watermark, position, watermark)
+                # except PIL.UnidentifiedImageError:
+                #     # Handle the case when Pillow cannot identify the image file
+                #     flash("Error: Unable to identify the uploaded image file", "danger")
+                #     return redirect('/add_product')  # Redirect or display an error message as needed
+                # except IOError:
+                #     # Handle other IO errors (e.g., file not found, permission issues)
+                #     flash("Error: Unable to open the uploaded image", "danger")
+                #     return redirect('/add_product')  # Redirect or display an error message as needed
 
-                            # Save the modified image
-                            modified_image_path = os.path.join(app.config['UPLOAD_FOLDER'], f"modified_{one_products_data_retrieve.p_original_image}")
-                            image.save(modified_image_path)
-
-                            # Update the database record with the modified image path
-                            one_products_data_retrieve.p_image = f"modified_{one_products_data_retrieve.p_original_image}"
-                            db.session.commit()
-
-                        except PIL.UnidentifiedImageError:
-                            # Handle the case when Pillow cannot identify the image file
-                            flash("Error: Unable to identify the uploaded image file", "danger")
-                            return redirect('/add_product')  # Redirect or display an error message as needed
-                        except IOError:
-                            # Handle other IO errors (e.g., file not found, permission issues)
-                            flash("Error: Unable to open the uploaded image", "danger")
-                            return redirect('/add_product')  # Redirect or display an error message as needed
-
-                    flash(f"Record Successfully Saved", "success")
-                    return redirect('/add_product')
-                except IntegrityError:
-                    db.session.rollback()
-                    flash("Error. Duplicate data detected. Please do not proceed and try again.", "danger")
-                    return redirect('/add_product')  # Add a return statement here
-            else:
-                return render_template('Administrator/add_product.html', all_product_category_name=all_product_category_name,
-                                       all_products_data_retrieve=all_products_data_retrieve,
-                                       notifications=notifications,
-                                       notifications_count=notifications_count)
-        except Exception as e:
-            # If an error occurs during database connection, display an error message
-            db.session.rollback()
-            flash(f"Error: {str(e)}" "", "danger")
-            return render_template('Administrator/login.html')
+            flash(f"Record Successfully Saved", "success")
+            return redirect('/add_product')
+            # except IntegrityError:
+            #     db.session.rollback()
+            #     flash("Error. Duplicate data detected. Please do not proceed and try again.", "danger")
+            #     return redirect('/add_product')  # Add a return statement here
+        else:
+            return render_template('Administrator/add_product.html', all_product_category_name=all_product_category_name,
+                                   all_products_data_retrieve=all_products_data_retrieve,
+                                   notifications=notifications,
+                                   notifications_count=notifications_count)
+        # except Exception as e:
+        #     # If an error occurs during database connection, display an error message
+        #     db.session.rollback()
+        #     flash(f"Error: {str(e)}" "", "danger")
+        #     return render_template('Administrator/login.html')
     else:
         return render_template('Administrator/login.html')
 

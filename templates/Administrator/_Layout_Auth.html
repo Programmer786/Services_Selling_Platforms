@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/vendor.min.css') }}" type="text/css" />
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/app.min.css') }}" type="text/css" />
 	<!-- ================== END core-css ================== -->
-	
+
 </head>
 <body>
 	<!-- BEGIN #app -->
@@ -35,7 +35,7 @@
 	<!--  Only ASCII character in that range allowed -->
 	<script>
 		function onlyNumberKey(evt) {
-			
+
 			// Only ASCII character in that range allowed
 			var ASCIICode = (evt.which) ? evt.which : evt.keyCode
 			if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
@@ -50,7 +50,7 @@
 		document.addEventListener("DOMContentLoaded", function() {
 			// Get the input field for the username
 			var usernameInput = document.querySelector('input[name="user_name"]');
-	
+
 			// Add an event listener to the input field to check for spaces
 			usernameInput.addEventListener('input', function() {
 				var username = this.value;
@@ -65,7 +65,7 @@
 		});
 	</script>
 	<!-- ================== End #username cannot allowed space" ================== -->
-	
+
 
 </body>
 
